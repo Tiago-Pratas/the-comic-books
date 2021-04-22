@@ -4,10 +4,9 @@ import passport from 'passport';
 const router = express.Router();
 
 /**
- * GET /register
- * render registration page
+ * POST auth/register
+ * apply register strategy
  */
- // /auth/register
 router.post('/register', (req, res, next) => {
     const { email, password } = req.body;
 
@@ -28,6 +27,10 @@ router.post('/register', (req, res, next) => {
     })(req);
 })
 
+/**
+ * POST /auth/login
+ * apply login strategy
+ */
 router.post('/login', (req, res, next) => {
     const { email, password } = req.body;
     console.log('Logging user', req.body);

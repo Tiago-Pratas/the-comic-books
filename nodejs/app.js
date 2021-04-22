@@ -4,6 +4,7 @@ import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { connect } from './db/mongoose.js'
+import { authRoutes } from './routes/index.js'
 
 //load env variables
 dotenv.config();
@@ -34,6 +35,9 @@ app.use(passport.session());
 //use bodyparser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//<-- Routes -->
+app.use('/auth', authRoutes);
 
 app.listen(port, () => {
     console.log(`Listening on port: ${port} 🚀`);
