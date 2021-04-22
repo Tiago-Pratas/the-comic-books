@@ -7,84 +7,64 @@ const router = express.Router();
  * GET /register
  * render registration page
  */
- router.get('/register', (req, res, next) => {
-    return res.render('register');
-})
-
-/**
- * POST /register
- * Regiter new users
- */
+ // /auth/register
 router.post('/register', (req, res, next) => {
     const { email, password } = req.body;
 
-    //if any of the body fields is empty
+    console.log('Registrando usuario...', req.body);
+
     if(!email || !password) {
-        const error = new Error('Invalid credentials');
-        return res.render('login', { error: error.message })        
+        const error = new Error('User and password are required');
+        return res.json(error.message);
     }
 
-    //call register strategy
     passport.authenticate('register', (error, user) => {
+
         if(error) {
-            return res.render('login', { error: error.message });
+            return res.json(error.message);
         }
 
-        return res.redirect('../jobs');
+        return res.json(user);
     })(req);
-});
-
-/**
- * GET //login
- * render login page
- */
-router.get('/login', (req, res, next) => {
-    return res.render('login', {user: req.user});
 })
 
-/**
- * POST /login
- * login registered users
- */
 router.post('/login', (req, res, next) => {
     const { email, password } = req.body;
+    console.log('Logging user', req.body);
 
-    if (!email || !password) {
-        const error = new Error('Invalid credentials');
-        return res.render('login',{error: error.message});
+    if(!email || !password) {
+        const error = new Error('Requires both user and password')
+        return res.json(error.message);
     }
 
     passport.authenticate('login', (error, user) => {
         if(error) {
-            return res.render('login',{error: error.message});
+            return res.json(error.message);
         }
 
         req.logIn(user, (error) => {
             if(error) {
                 return res.send(error.message);
             }
-            
-            return res.redirect('../jobs');
+
+            return res.send(user);
         })
     })(req, res, next)
-})
+});
 
-/**
- * POST /logout
- * allow users to logout
- */
-router.get('/logout', (req, res, next) => {
+router.post('/logout', (req, res, next) => {
+    console.log('req.user', req.user);
     if(req.user) {
         req.logout();
 
         req.session.destroy(() => {
             res.clearCookie('connect.sid');
-            return res.render('main', { message: 'Logged out' });
+            return res.json('Logged out successfuly');
         })
+    } else {
+        return res.json('No user found');
     }
+});
 
-    return res.render('login');
-
-})
 
 export { router }
