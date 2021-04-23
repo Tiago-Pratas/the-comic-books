@@ -8,7 +8,8 @@ const IssueSchema = mongoose.Schema({
     },
     image: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
     },
     localImage: {
         type: String,
@@ -18,7 +19,7 @@ const IssueSchema = mongoose.Schema({
     release: {
         type: String,
         trim: true,
-        required: true,
+        
     },
     volume:  {
         name: {
@@ -61,7 +62,6 @@ const IssueSchema = mongoose.Schema({
             api_detail_url: {
                 type: String,
                 required: true,
-                unique: true,
             } 
     }],
     tradeoff: {
