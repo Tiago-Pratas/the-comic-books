@@ -13,4 +13,6 @@ const connect = async () => {
     }
 };
 
+mongoose.set('useCreateIndex', true);
+
 export { connect };

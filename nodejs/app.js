@@ -4,7 +4,10 @@ import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { connect } from './db/mongoose.js'
-import { authRoutes } from './routes/index.js'
+import { 
+    authRoutes,
+    issueRoutes,
+} from './routes/index.js'
 
 //load env variables
 dotenv.config();
@@ -38,6 +41,18 @@ app.use(express.urlencoded({ extended: true }));
 
 //<-- Routes -->
 app.use('/auth', authRoutes);
+app.use('/issue', issueRoutes);
+
+//<-- exception handling -->
+app.use('*', (req, res, next) => {
+    const error = new Error('Route not found');
+    error.status = 404;
+    return res.json(error);
+});
+
+app.use((err, req, res, next) => {
+    return res.status(err.status || 500).json(err.message || 'Unknown error')
+})
 
 app.listen(port, () => {
     console.log(`Listening on port: ${port} 🚀`);
