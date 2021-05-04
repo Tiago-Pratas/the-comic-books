@@ -7,14 +7,6 @@ import crypto from 'crypto';
 const router = express.Router();
 
 /**
- * GET /register
- * render registration page
- */
-router.get('/register', async (req, res, next) => {
-        return res.render('register');
-})
-
-/**
  * POST /register
  * Regiter new users
  */
@@ -25,7 +17,7 @@ router.post('/register', async (req, res, next) => {
         //if any of the body fields is empty
         if(!email || !password) {
             const error = new Error('Invalid credentials');
-            return res.render('login', { error: error.message })        
+            return res.status(401).json(error)        
         }
         
         //call register strategy
@@ -37,7 +29,7 @@ router.post('/register', async (req, res, next) => {
             //send email with verification link
             sendEmailToken(email, token.verificationToken, req.protocol, req.get('host'));
 
-            return res.redirect('/auth/login');
+            return res.status(200).json('new user created');
         })(req);
         
 });
@@ -52,16 +44,12 @@ router.get('/verify/:email/:verificationToken', async (req, res, next) => {
 
         const foundToken = await Token.findOne({ email, verificationToken });
 
-
-
         if(foundToken && foundToken.pwdReset == false) {
-            console.log(foundToken.userId);
-
-            const updateUser = await User.findByIdAndUpdate(foundToken.userId, 
+            await User.findByIdAndUpdate(foundToken.userId, 
                 { isVerified: true }, 
                 { new: true });
 
-            return res.json(updateUser)
+            return res.status(200).json('user verified')
         };
 
         if(foundToken && foundToken.pwdReset == true) {
@@ -82,7 +70,6 @@ router.get('/verify/:email/:verificationToken', async (req, res, next) => {
 
     }
 });
-
 
 /**
  * POST /verify/resend
@@ -118,7 +105,7 @@ router.post('/verify/resend', async (req, res, next) => {
 
         await sendEmailToken(email, findToken.verificationToken, req.protocol, req.get('host'));
 
-        return res.status(200).json('sent email with existing permalink')
+        return res.status(200).json('sent email with permalink')
 
     }
     catch (e) {
@@ -161,15 +148,6 @@ router.post('/resetpass', async (req, res, next) => {
     }
 })
 
-
-/**
- * GET //login
- * render login page
- */
-router.get('/login', (req, res, next) => {
-    return res.render('login', {user: req.user});
-})
-
 /**
  * POST /login
  * login registered users
@@ -179,7 +157,7 @@ router.post('/login', (req, res, next) => {
 
     if (!email || !password) {
         const error = new Error('Invalid credentials');
-        return res.render('login',{error: error.message});
+        return res.status(422).json(error);
     }
 
     passport.authenticate('login', (error, user) => {
@@ -192,7 +170,7 @@ router.post('/login', (req, res, next) => {
                 return res.send(error.message);
             }
             
-            return res.redirect('../volumes/search');
+            return res.status(200).json('user logged in');
         })
     })(req, res, next)
 })
@@ -206,12 +184,11 @@ router.get('/logout', (req, res, next) => {
         req.logout();
 
         req.session.destroy(() => {
-            res.clearCookie('connect.sid');
-            return res.render('login', { message: 'Logged out' });
+            return res.clearCookie('connect.sid');
         })
     }
 
-    return res.render('login');
+    return res.status(200).json('user logged out');
 
 })
 
