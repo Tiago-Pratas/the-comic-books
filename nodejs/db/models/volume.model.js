@@ -1,27 +1,23 @@
 import mongoose from 'mongoose';
 
-const volumeSchema = mongoose.Schema({
-    name: {
-        type:String,
-        required: true,
-        trim: true,
+const VolumeSchema = mongoose.Schema(
+    {
+        ownerId: {
+            type: mongoose.Types.ObjectId,
+            ref: 'User',
+        },
+        name: {
+            type: String,
+            required: true,
+        },
+        hoard: [{ type: mongoose.Types.ObjectId, ref: 'Issue' }],
+        wishlist: [{ type: mongoose.Types.ObjectId, ref: 'Issue' }],
     },
-    api_detail_url: {
-        type: String,
-        required: true,
-
-    },
-    issues: [{type: mongoose.Types.ObjectId, ref: 'Issue'}],
-    complete: {
-        type: Boolean,
-        required: true,
-        default: false,
+    {
+        timestamps: true,
     }
+);
 
-    },{
-    timestamps: true,
-});
+const Volume = mongoose.model('Volume', VolumeSchema);
 
-const Volume = mongoose.model('Volume', volumeSchema);
-
-export { Volume }
+export { Volume };

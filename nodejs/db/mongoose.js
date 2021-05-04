@@ -7,12 +7,13 @@ const connect = async () => {
             useUnifiedTopology: true,
         });
         console.log('Connected to the DB');
-    }
-    catch (error) {
-        console.log('There has been an error connecting with the DB', error)
+    } catch (error) {
+        console.log('There has been an error connecting with the DB', error);
     }
 };
 
+//avoid deprecation warnings
 mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 
 export { connect };
