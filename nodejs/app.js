@@ -1,12 +1,9 @@
 import express from 'express';
-import path from 'path';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
-import hbs from 'express-handlebars';
 import { connect } from './db/mongoose.js';
-import methodOverride from 'method-override';
 import { authRoutes, issueRoutes, volumeRoutes, mainRoutes, marketRoutes } from './routes/index.js';
 import { isAuthenticated } from './middleware/auth.middleware.js';
 import './services/passport.js';
@@ -42,23 +39,6 @@ app.use(passport.session());
 //use bodyparser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-//initialise method override
-app.use(methodOverride('_method'));
-
-//<-- templates -->
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-app.engine(
-    'hbs',
-    hbs({
-        extname: '.hbs',
-        defaultLayout: 'main',
-        layoutDir: path.join(__dirname, 'views', 'layout'),
-    })
-);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
-app.use(express.static(path.join(__dirname, 'public')));
 
 //<-- Routes -->
 app.use('/', mainRoutes);
