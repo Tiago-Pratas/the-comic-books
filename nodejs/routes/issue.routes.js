@@ -3,33 +3,24 @@ import axios from 'axios';
 import { Issue } from '../db/models/issue.model.js';
 import { Volume } from '../db/models/volume.model.js';
 import { Collectible } from '../db/models/collectible.model.js';
+import { getIssues } from '../services/axios.js';
 import { Price } from '../db/models/price.model.js';
 
 const router = express.Router();
-
-router.get('/search', (req, res) => {
-    return res.render('search');
-});
 
 /**
  * GET issues/search
  * get a list of all the issues limited to 100 per call
  */
-router.post('/search', async (req, res, next) => {
+router.post('/search/:offset', async (req, res, next) => {
     try {
-        const field = req.body.field;
+        const { field, fieldValue } = req.body;
 
-        const fieldValue = req.body.fieldValue;
+        const { offset } = req.params;
 
-        const response = await axios.get('https://comicvine.gamespot.com/api/issues', {
-            params: {
-                api_key: process.env.API_KEY,
-                format: 'json',
-                filter: `${field}:${fieldValue}`,
-            },
-        });
+        const response = getIssues(field, fieldValue, offset);
 
-        return res.render('issueSearch', { response: response.data.results });
+        return res.status(200).json(response.data.results);
     } catch (e) {
         next(e);
     }
@@ -56,19 +47,19 @@ router.get('/detail/:apiRef', async (req, res, next) => {
                         api_key: process.env.API_KEY,
                         format: 'json',
                     },
-                }
+                },
             );
 
             const updateIssue = await Issue.findOneAndUpdate(
                 { apiRef },
                 { credits: [...getIssues.data.results.person_credits] },
-                { new: true }
+                { new: true },
             );
 
-            return res.render('issueDetail', { response: updateIssue.toJSON() });
+            return res.status(200).json(updateIssue);
         }
 
-        return res.render('issueDetail', { response: findIssue });
+        return res.status(200).json(findIssue);
     } catch (e) {
         next(e);
     }
@@ -80,7 +71,6 @@ router.get('/detail/:apiRef', async (req, res, next) => {
  * add Issue to collection
  */
 router.get('/wishlist/add/:apiRef', async (req, res, next) => {
-    //TODO: refactor this and check the logic
     try {
         const ownerId = req.user._id;
 
@@ -94,8 +84,6 @@ router.get('/wishlist/add/:apiRef', async (req, res, next) => {
         });
 
         const findCollectible = await Collectible.find({ ownerId });
-
-        console.log('here', findCollectible);
 
         //if no Volumes are found create a new one
         if (findVolume.length == 0) {
@@ -190,7 +178,7 @@ router.get('/collection/add/:apiRef', async (req, res, next) => {
                 await findCollectible[0].save();
             }
 
-            return res.redirect('/../../volumes/collection');
+            return res.redirect('/../volumes/collection');
         } else {
             await findVolume[0].hoard.addToSet(findIssue[0]._id);
             await findVolume[0].save();
@@ -204,13 +192,13 @@ router.get('/collection/add/:apiRef', async (req, res, next) => {
 
                 await newCollectible.save();
 
-                return res.redirect('../../../volumes/collection');
+                return res.redirect('/../volumes/collection');
             } else {
                 await findCollectible[0].hoard.addToSet(findVolume._id);
                 await findCollectible[0].save();
             }
 
-            return res.redirect('../../../volumes/collection');
+            return res.redirect('/../volumes/collection');
         }
     } catch (e) {
         next(e);
@@ -230,11 +218,9 @@ router.delete('/wishlist/delete/:_id', async (req, res, next) => {
 
         const findIssue = await Issue.findById({ _id });
 
-        const findVolume = await Volume.find({ name: findIssue.volume.name });
+        await Volume.find({ name: findIssue.volume.name });
 
-        console.log('Volume ->', findVolume);
-
-        const deleteIssue = await Volume.findOneAndUpdate(
+        await Volume.findOneAndUpdate(
             {
                 ownerId,
                 name: findIssue.volume.name,
@@ -244,11 +230,10 @@ router.delete('/wishlist/delete/:_id', async (req, res, next) => {
                     wishlist: _id,
                 },
             },
-            { new: true }
+            { new: true },
         );
 
-        console.log(deleteIssue);
-        return res.redirect('../issues/wishlist');
+        return res.status(200).json('deleted issue from collection');
     } catch (e) {
         next(e);
     }
@@ -262,7 +247,7 @@ router.delete('/collection/delete/:_id', async (req, res, next) => {
 
         const findIssue = await Issue.findById({ _id });
 
-        const deleteIssue = await Volume.findOneAndUpdate(
+        await Volume.findOneAndUpdate(
             {
                 ownerId,
                 name: findIssue.volume.name,
@@ -272,10 +257,10 @@ router.delete('/collection/delete/:_id', async (req, res, next) => {
                     hoard: _id,
                 },
             },
-            { new: true }
+            { new: true },
         );
 
-        return res.redirect('../issues/collection', { deleted: deleteIssue });
+        return res.status(200).json(findIssue);
     } catch (e) {
         next(e);
     }
@@ -286,7 +271,7 @@ router.get('/sell/:_id', async (req, res, next) => {
         const { _id } = req.params;
 
         const editIssue = await Issue.findById({ _id }).lean();
-        return res.render('editIssue', { issue: editIssue });
+        return res.status(200).json(editIssue);
     } catch (e) {
         next(e);
     }
@@ -319,8 +304,11 @@ router.put('/sell/:_id', async (req, res, next) => {
                 issue: _id,
             });
 
+            //TODO: test this with the same issue and different users
             const savedPrice = await newPrice.save();
-            await Issue.findByIdAndUpdate({ _id }, { avgPrice: savedPrice._id }, { new: true });
+            await Issue.findByIdAndUpdate({ _id },
+                { $push: { avgPrice: savedPrice._id } },
+                { new: true });
 
             return res.redirect('/market');
         }
@@ -337,13 +325,13 @@ router.put('/sell/:_id', async (req, res, next) => {
                 forTrade,
                 issue: _id,
             },
-            { new: true }
+            { new: true },
         );
 
         await Issue.findByIdAndUpdate(
             { _id },
             { $set: { avgPrice: findPrice._id } },
-            { new: true }
+            { new: true },
         );
 
         return res.redirect('/market');

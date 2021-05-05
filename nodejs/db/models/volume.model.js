@@ -15,7 +15,7 @@ const VolumeSchema = mongoose.Schema(
     },
     {
         timestamps: true,
-    }
+    },
 );
 
 const Volume = mongoose.model('Volume', VolumeSchema);

@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
             findPrices.map(async (issue) => {
                 const issues = Issue.findById({ _id: issue.issue }).lean();
                 return issues;
-            })
+            }),
         );
 
         return res.render('collection', {

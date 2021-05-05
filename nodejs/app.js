@@ -29,7 +29,7 @@ app.use(
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
         }),
-    })
+    }),
 );
 
 //initialise passport

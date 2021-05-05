@@ -82,7 +82,7 @@ router.get('/detail/:id', async (req, res, next) => {
 
                         await newIssue.save();
                     }
-                })
+                }),
             );
             return res.render('volumeDetail', {
                 response: response.data.results,
@@ -125,9 +125,9 @@ router.get('/collection', async (req, res, next) => {
                     el.hoard.map(async (image) => {
                         const images = await Issue.findById(image).lean();
                         return images;
-                    })
+                    }),
                 );
-            })
+            }),
         );
 
         const flattenedIssues = findIssues.flat();
@@ -166,9 +166,9 @@ router.get('/wishlist', async (req, res, next) => {
                         const images = await Issue.findById(image).lean();
                         console.log('images', images);
                         return images;
-                    })
+                    }),
                 );
-            })
+            }),
         );
 
         const flattenedIssues = findIssues.flat();

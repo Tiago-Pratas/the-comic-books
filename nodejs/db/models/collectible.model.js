@@ -10,7 +10,7 @@ const CollectibleSchema = mongoose.Schema(
     },
     {
         timestamps: true,
-    }
+    },
 );
 
 const Collectible = mongoose.model('Collectible', CollectibleSchema);

@@ -68,7 +68,7 @@ const IssueSchema = mongoose.Schema(
     },
     {
         timestamps: true,
-    }
+    },
 );
 
 const Issue = mongoose.model('Issue', IssueSchema);

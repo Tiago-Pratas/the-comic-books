@@ -47,8 +47,8 @@ const registerStrategy = new LocalStrategy(customFields, async (req, email, pass
         //create new user
         const newUser = new User({
             email,
-            username: req.body.username,
-            password: hash,
+            'username': req.body.username,
+            'password': hash,
             'verification.token': verificationToken,
         });
 

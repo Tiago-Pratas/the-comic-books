@@ -11,27 +11,25 @@ const router = express.Router();
  * Regiter new users
  */
 router.post('/register', async (req, res, next) => {
+    const { email, password } = req.body;
 
-        const { email, password } = req.body;
-    
-        //if any of the body fields is empty
-        if(!email || !password) {
-            const error = new Error('Invalid credentials');
-            return res.status(401).json(error)        
+    //if any of the body fields is empty
+    if (!email || !password) {
+        const error = new Error('Invalid credentials');
+        return res.status(401).json(error);
+    }
+
+    //call register strategy
+    passport.authenticate('register', (error, user, token) => {
+        if (error) {
+            return res.render('register', { error: error.message });
         }
-        
-        //call register strategy
-        passport.authenticate('register', (error, user, token) => {
-            if(error) {
-                return res.render('register', { error: error.message });
-            }
-            
-            //send email with verification link
-            sendEmailToken(email, token.verificationToken, req.protocol, req.get('host'));
 
-            return res.status(200).json('new user created');
-        })(req);
-        
+        //send email with verification link
+        sendEmailToken(email, token.verificationToken, req.protocol, req.get('host'));
+
+        return res.status(200).json('new user created');
+    })(req);
 });
 
 /**
@@ -44,30 +42,25 @@ router.get('/verify/:email/:verificationToken', async (req, res, next) => {
 
         const foundToken = await Token.findOne({ email, verificationToken });
 
-        if(foundToken && foundToken.pwdReset == false) {
-            await User.findByIdAndUpdate(foundToken.userId, 
-                { isVerified: true }, 
-                { new: true });
+        if (foundToken && foundToken.pwdReset == false) {
+            await User.findByIdAndUpdate(foundToken.userId, { isVerified: true }, { new: true });
 
-            return res.status(200).json('user verified')
-        };
-
-        if(foundToken && foundToken.pwdReset == true) {
-            
-            const updatePwd = await User.findByIdAndUpdate(foundToken.userId, 
-                { password: req.body.password},
-                { new: true });
-
-            return res.json('updated password')
+            return res.status(200).json('user verified');
         }
 
-        return res.status(401).json('not registered')
+        if (foundToken && foundToken.pwdReset == true) {
+            await User.findByIdAndUpdate(
+                foundToken.userId,
+                { password: req.body.password },
+                { new: true },
+            );
 
-        
-    }
-    catch (e) {
+            return res.json('updated password');
+        }
+
+        return res.status(401).json('not registered');
+    } catch (e) {
         next(e);
-
     }
 });
 
@@ -81,7 +74,7 @@ router.post('/verify/resend', async (req, res, next) => {
 
         const findUser = await User.findOne({ email });
 
-        if(!findUser.length) {
+        if (!findUser.length) {
             const error = new Error('Please create an account');
 
             return res.status(401).json(error);
@@ -89,7 +82,7 @@ router.post('/verify/resend', async (req, res, next) => {
 
         const findToken = await Token.findOne({ userId: findUser._id, email });
 
-        if(!findToken.length) {
+        if (!findToken.length) {
             const newToken = new Token({
                 userId: findUser._id,
                 email,
@@ -100,15 +93,13 @@ router.post('/verify/resend', async (req, res, next) => {
 
             await sendEmailToken(email, saveToken.verificationToken, req.protocol, req.get('host'));
 
-            return res.status(200).json('sent email with new permalink')
+            return res.status(200).json('sent email with new permalink');
         }
 
         await sendEmailToken(email, findToken.verificationToken, req.protocol, req.get('host'));
 
-        return res.status(200).json('sent email with permalink')
-
-    }
-    catch (e) {
+        return res.status(200).json('sent email with permalink');
+    } catch (e) {
         next(e);
     }
 });
@@ -121,10 +112,13 @@ router.post('/resetpass', async (req, res, next) => {
     try {
         const { email } = req.user;
 
-        const findToken = await Token.findOneAndUpdate({ email }, { pwdReset: true }, { new: true });
+        const findToken = await Token.findOneAndUpdate(
+            { email },
+            { pwdReset: true },
+            { new: true },
+        );
 
-        if(!findToken.length) {
-
+        if (!findToken.length) {
             const newToken = new Token({
                 userId: req.user._id,
                 email,
@@ -138,15 +132,14 @@ router.post('/resetpass', async (req, res, next) => {
 
             return res.status(200).json('email sent');
         }
-        
+
         await sendEmailToken(email, findToken.verificationToken, req.protocol, req.get('host'));
 
-        return res.status(200).json('email sent')
-    } 
-    catch(e) {
+        return res.status(200).json('email sent');
+    } catch (e) {
         next(e);
     }
-})
+});
 
 /**
  * POST /login
@@ -161,35 +154,34 @@ router.post('/login', (req, res, next) => {
     }
 
     passport.authenticate('login', (error, user) => {
-        if(error) {
-            return res.render('login',{error: error.message});
+        if (error) {
+            return res.render('login', { error: error.message });
         }
 
         req.logIn(user, (error) => {
-            if(error) {
+            if (error) {
                 return res.send(error.message);
             }
-            
+
             return res.status(200).json('user logged in');
-        })
-    })(req, res, next)
-})
+        });
+    })(req, res, next);
+});
 
 /**
  * POST /logout
  * allow users to logout
  */
 router.get('/logout', (req, res, next) => {
-    if(req.user) {
+    if (req.user) {
         req.logout();
 
         req.session.destroy(() => {
             return res.clearCookie('connect.sid');
-        })
+        });
     }
 
     return res.status(200).json('user logged out');
+});
 
-})
-
-export { router }
+export { router };
