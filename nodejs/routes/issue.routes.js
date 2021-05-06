@@ -1,16 +1,16 @@
 import express from 'express';
-import axios from 'axios';
 import { Issue } from '../db/models/issue.model.js';
 import { Volume } from '../db/models/volume.model.js';
 import { Collectible } from '../db/models/collectible.model.js';
-import { getIssues } from '../services/axios.js';
+import { getIssues, searchIssues } from '../services/axios.js';
 import { Price } from '../db/models/price.model.js';
 
 const router = express.Router();
 
 /**
  * GET issues/search
- * get a list of all the issues limited to 100 per call
+ * get a list of all the issues limited to 50 per call
+ * get next batch by increasing the offset by 50
  */
 router.post('/search/:offset', async (req, res, next) => {
     try {
@@ -18,9 +18,9 @@ router.post('/search/:offset', async (req, res, next) => {
 
         const { offset } = req.params;
 
-        const response = getIssues(field, fieldValue, offset);
+        const response = await searchIssues(field, fieldValue, offset);
 
-        return res.status(200).json(response.data.results);
+        return res.status(200).json(response);
     } catch (e) {
         next(e);
     }
@@ -30,9 +30,9 @@ router.post('/search/:offset', async (req, res, next) => {
  * GET issues/detal/:id
  * get a detailed view of a specific issue
  */
-router.get('/detail/:apiRef', async (req, res, next) => {
+router.get('/detail/:apiRef/:offset', async (req, res, next) => {
     try {
-        const { apiRef } = req.params;
+        const { apiRef, offset } = req.params;
 
         const findIssue = await Issue.find({
             apiRef,
@@ -40,19 +40,11 @@ router.get('/detail/:apiRef', async (req, res, next) => {
         }).lean();
 
         if (!findIssue.length) {
-            const getIssues = await axios.get(
-                `https://comicvine.gamespot.com/api/issue/4000-${apiRef}/`,
-                {
-                    params: {
-                        api_key: process.env.API_KEY,
-                        format: 'json',
-                    },
-                },
-            );
+            const getIssue = await getIssues(apiRef, offset);
 
             const updateIssue = await Issue.findOneAndUpdate(
                 { apiRef },
-                { credits: [...getIssues.data.results.person_credits] },
+                { credits: [...getIssue.data.results.person_credits] },
                 { new: true },
             );
 
