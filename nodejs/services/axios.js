@@ -3,36 +3,35 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const searchIssues = async (field, fieldValue, offset) => {
+const searchIssues = async (field, fieldValue, result) => {
     return await axios.get('https://comicvine.gamespot.com/api/issues', {
         params: {
             api_key: process.env.API_KEY,
             format: 'json',
-            limit: '50',
-            offset,
+            limit: '100',
+            offset: result,
             filter: `${field}:${fieldValue}`,
         },
     });
 };
 
-const getIssues = async (apiRef, result) => {
-    return await axios.get(
-        `https://comicvine.gamespot.com/api/issue/4000-${apiRef}/`,
+const getIssues = async (apiRef) => {
+    return await axios.get(`https://comicvine.gamespot.com/api/issue/4000-${apiRef}/`,
         {
             params: {
                 api_key: process.env.API_KEY,
-                offset: result,
                 format: 'json',
             },
         },
     );
 };
 
-const saveIssues = async (id) => {
+const saveIssues = async (id, result) => {
     return await axios.get('https://comicvine.gamespot.com/api/issues/', {
         params: {
             api_key: process.env.API_KEY,
             format: 'json',
+            offset: result,
             filter: `volume:${id}`,
         },
     });
@@ -47,11 +46,13 @@ const getVolumes = async (id) => {
     });
 };
 
-const searchVolumes = async (field, fieldValue) => {
+const searchVolumes = async (field, fieldValue, result) => {
     return await axios.get('https://comicvine.gamespot.com/api/volumes', {
         params: {
             api_key: process.env.API_KEY,
             format: 'json',
+            limit: '100',
+            offset: result,
             filter: `${field}:${fieldValue}`,
         },
     });
