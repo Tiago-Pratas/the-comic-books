@@ -1,34 +1,24 @@
 import express from 'express';
-import axios from 'axios';
+import { getVolume, saveIssues, searchVolumes } from '../services/axios.js';
 import { Volume } from '../db/models/volume.model.js';
 import { Issue } from '../db/models/issue.model.js';
 import { Collectible } from '../db/models/collectible.model.js';
 
 const router = express.Router();
 
-router.get('/search', (req, res, next) => {
-    return res.render('volumeSearch');
-});
 /**
  * GET /volumes/search
  * search for volumes with field and value
  */
-router.post('/search', async (req, res, next) => {
+router.post('/search/:result', async (req, res, next) => {
     try {
-        const field = req.body.field;
+        const { field, fieldValue } = req.body;
 
-        const fieldValue = req.body.fieldValue;
+        const { result } = req.params;
 
-        const response = await axios.get('https://comicvine.gamespot.com/api/volumes', {
-            params: {
-                api_key: process.env.API_KEY,
-                format: 'json',
-                filter: `${field}:${fieldValue}`,
-            },
-        });
+        const volumes = await searchVolumes(field, fieldValue, result);
 
-        console.log(response.data.results);
-        return res.render('volumeSearch', { response: response.data.results });
+        return res.status(200).json(volumes);
     } catch (e) {
         next(e);
     }
@@ -38,64 +28,42 @@ router.post('/search', async (req, res, next) => {
  * GET volumes/deatil/:id
  * show a specific volume and cache the issues
  */
-router.get('/detail/:id', async (req, res, next) => {
+router.get('/detail/:id/:result', async (req, res, next) => {
     try {
         const { id } = req.params;
+        const { result } = req.params || 0;
 
-        const response = await axios.get(`https://comicvine.gamespot.com/api/volume/4050-${id}`, {
-            params: {
-                api_key: process.env.API_KEY,
-                format: 'json',
-            },
-        });
+        const volume = await getVolume(id);
 
-        const findIssues = await Issue.find({
-            'volume.name': response.data.results.name,
+        const persistedIssues = await Issue.find({
+            'volume.name': volume.data.results.name,
         }).lean();
 
-        console.log(findIssues);
-
         if (!findIssues.length) {
-            const images = await axios.get('https://comicvine.gamespot.com/api/issues/', {
-                params: {
-                    api_key: process.env.API_KEY,
-                    format: 'json',
-                    filter: `volume:${id}`,
-                },
-            });
+            const issues = await saveIssues(id, result);
 
             await Promise.all(
-                images.data.results.map(async (el) => {
+                issues.data.results.map(async (issue) => {
                     const issues = await Issue.find({ apiRef: el.id });
-
-                    console.log(issues.apiRef);
 
                     if (issues == 0) {
                         const newIssue = new Issue({
-                            apiRef: el.id,
-                            number: el.issue_number,
-                            image: el.image.original_url,
-                            release: el.cover_date,
-                            description: el.description,
-                            volume: el.volume,
+                            apiRef: issue.id,
+                            number: issue.issue_number,
+                            image: issue.image.original_url,
+                            release: issue.cover_date,
+                            description: issue.description,
+                            volume: issue.volume,
                         });
 
                         await newIssue.save();
                     }
                 }),
             );
-            return res.render('volumeDetail', {
-                response: response.data.results,
-                images: images.data.results,
-                user: req.user.toJSON(),
-            });
+            return res.status(200).json(issues.data.results, volume.data.results, req.user);
         }
 
-        return res.render('volumeDetail', {
-            response: response.data.results,
-            issue: findIssues,
-            user: req.user.toJSON(),
-        });
+        return res.status(200).json(persistedIssues, volume, req.user);
     } catch (e) {
         console.log(e);
         next(e);
@@ -108,34 +76,27 @@ router.get('/detail/:id', async (req, res, next) => {
  */
 router.get('/collection', async (req, res, next) => {
     try {
-        const findCollectibles = await Collectible.find({ ownerId: req.user._id });
+        const Collectibles = await Collectible.find({ ownerId: req.user._id });
 
-        if (!findCollectibles.length) {
-            return res.render('collection');
-        }
-
-        const findVolume = await Volume.find({
+        const Volumes = await Volume.find({
             ownerId: req.user._id,
-            _id: findCollectibles[0].hoard,
+            _id: Collectibles[0].hoard,
         });
 
-        const findIssues = await Promise.all(
-            findVolume.map(async (el) => {
+        const Issues = await Promise.all(
+            Volumes.map(async (volume) => {
                 return await Promise.all(
-                    el.hoard.map(async (image) => {
-                        const images = await Issue.findById(image).lean();
+                    volume.hoard.map(async (id) => {
+                        const images = await Issue.findById(id).lean();
                         return images;
                     }),
                 );
             }),
         );
 
-        const flattenedIssues = findIssues.flat();
+        const flattenedIssues = Issues.flat();
 
-        return res.render('collection', {
-            issue: flattenedIssues,
-            user: req.user.toJSON(),
-        });
+        return res.status(200).json(flattenedIssues);
     } catch (e) {
         console.log(e);
         next(e);
@@ -148,35 +109,31 @@ router.get('/collection', async (req, res, next) => {
  */
 router.get('/wishlist', async (req, res, next) => {
     try {
-        const findCollectibles = await Collectible.find({ ownerId: req.user._id });
+        const Collectibles = await Collectible.find({ ownerId: req.user._id });
 
-        if (!findCollectibles.length) {
-            return res.render('collection');
+        if (!Collectibles.length) {
+            return res.status(404)._destroy('No issues in your collection yet');
         }
 
-        const findVolume = await Volume.find({
+        const Volumes = await Volume.find({
             ownerId: req.user._id,
-            _id: findCollectibles[0].hoard,
+            _id: Collectibles[0].hoard,
         });
 
-        const findIssues = await Promise.all(
-            findVolume.map(async (el) => {
+        const Issues = await Promise.all(
+            Volumes.map(async (volume) => {
                 return await Promise.all(
-                    el.wishlist.map(async (image) => {
-                        const images = await Issue.findById(image).lean();
-                        console.log('images', images);
-                        return images;
+                    volume.wishlist.map(async (id) => {
+                        const issues = await Issue.findById(id).lean();
+                        return issues;
                     }),
                 );
             }),
         );
 
-        const flattenedIssues = findIssues.flat();
+        const flattenedIssues = Issues.flat();
 
-        return res.render('collection', {
-            issue: flattenedIssues,
-            user: req.user.toJSON(),
-        });
+        return res.status(200).json(flattenedIssues);
     } catch (e) {
         next(e);
     }
