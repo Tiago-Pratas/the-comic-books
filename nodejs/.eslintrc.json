@@ -26,7 +26,17 @@
                     "ClassDeclaration": false,
                     "ArrowFunctionExpression": false,
                     "FunctionExpression": false
-                }
+                },
+                "valid-jsdoc": 0,
+                "space-in-brackets": ["error", "always", {
+                    "singleValue": false,
+                    "objectsInArrays": false,
+                    "arraysInArrays": false,
+                    "arraysInObjects": false,
+                    "objectsInObjects": false,
+                    "propertyName": false
+                }],
+                "quotes": ["error", "single"]
             }
         ]
     }
