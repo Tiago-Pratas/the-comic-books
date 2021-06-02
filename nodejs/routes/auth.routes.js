@@ -1,4 +1,5 @@
 import express from 'express';
+<<<<<<< Updated upstream
 import passport from 'passport';
 import { sendEmailToken } from '../services/nodemailer.js';
 import { Token } from '../db/models/token.model.js';
@@ -18,28 +19,32 @@ router.post('/register', async (req, res, next) => {
         const error = new Error('Invalid credentials');
         return res.status(401).json(error);
     }
+=======
+import * as controller from '../controllers/auth.controllers.js';
 
-    //call register strategy
-    passport.authenticate('register', (error, user, token) => {
-        if (error) {
-            return res.render('register', { error: error.message });
-        }
+const router = express.Router();
 
-        //send email with verification link
-        sendEmailToken(email, token.verificationToken, req.protocol, req.get('host'));
 
+router.post('/register', controller.registerPost);
+
+router.post('/login', controller.loginPost);
+>>>>>>> Stashed changes
+
+router.post('/logout', controller.logoutPost);
+
+router.post('/verify/resend', controller.resendToken);
+
+<<<<<<< Updated upstream
         return res.status(200).json('new user created');
     })(req);
 });
+=======
+router.post('/verify/:email/:verificationToken', controller.verifyToken);
+>>>>>>> Stashed changes
 
-/**
- * GET auth/send/:email
- * render confimation email view and send email to user with confirmation link
- */
-router.get('/verify/:email/:verificationToken', async (req, res, next) => {
-    try {
-        const { email, verificationToken } = req.params;
+router.get('/check-session', controller.checkSession);
 
+<<<<<<< Updated upstream
         const foundToken = await Token.findOne({ email, verificationToken });
 
         if (foundToken && foundToken.pwdReset == false) {
@@ -183,5 +188,7 @@ router.get('/logout', (req, res, next) => {
 
     return res.status(200).json('user logged out');
 });
+=======
+>>>>>>> Stashed changes
 
 export { router };

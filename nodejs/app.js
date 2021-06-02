@@ -13,6 +13,7 @@ dotenv.config();
 //connect to mongoDB
 connect();
 
+
 //intialise server
 const port = process.env.PORT;
 const app = express();
@@ -53,7 +54,6 @@ app.use('*', (req, res, next) => {
     error.status = 404;
     return res.json(error);
 });
-
 app.use((err, req, res, next) => {
     return res.status(err.status || 500).json(err.message || 'Unknown error');
 });

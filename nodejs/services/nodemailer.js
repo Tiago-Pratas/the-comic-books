@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-async function sendEmailToken(userEmail, verificationToken, protocol, host) {
+const sendEmailToken = async(userEmail, verificationToken, protocol, host) => {
     const transporter = nodemailer.createTransport({
         service: process.env.EMAIL_SERVICE,
         auth: {
