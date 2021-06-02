@@ -8,6 +8,9 @@ const UserSchema = mongoose.Schema(
             trim: true,
             unique: true,
         },
+        profilePic: {
+            type: String,
+        },
         username: {
             type: String,
             required: true,
@@ -28,7 +31,7 @@ const UserSchema = mongoose.Schema(
         },
         role: {
             type: String,
-            enum: ['user', 'admin'],
+            enum: ['user', 'admin', 'moderator'],
             default: 'user',
         },
     },

@@ -2,69 +2,78 @@ import mongoose from 'mongoose';
 
 const IssueSchema = mongoose.Schema(
     {
-        number: {
-            type: String,
-            trim: true,
+        apiRef: {
+            type: Number,
             required: true,
         },
-        image: {
+        name: {
             type: String,
-            required: true,
-            unique: true,
         },
-        localImage: {
-            type: String,
-            trim: true,
-        },
-        release: {
-            type: String,
-            trim: true,
-        },
-        volume: {
-            name: {
-                type: String,
-                required: true,
-            },
-            api_detail_url: {
-                type: String,
-                required: true,
-            },
-        },
-        condition: {
-            type: String,
-            trim: true,
-        },
-        description: {
-            type: String,
-            trim: true,
-        },
-        credits: [
+        character_credits: [
             {
+                apiRef: {
+                    type: Number,
+                    required: true,
+                },
                 name: {
                     type: String,
                     required: true,
                 },
+            },
+        ],
+        chracter_dies_in: [
+            {
+                apiRef: {
+                    type: Number,
+                    required: true,
+                },
+                name: {
+                    type: String,
+                    required: true,
+                },
+            },
+        ],
+        cover_date: {
+            type: String,
+        },
+        description: {
+            type: String,
+            //create a function that will remove all html tags
+        },
+        issue_number: {
+            type: String,
+        },
+        person_credits: [
+            {
+                apiRef: {
+                    type: String,
+                },
+                name: {
+                    type: String,
+                },
                 role: {
                     type: String,
-                    required: true,
-                },
-                api_detail_url: {
-                    type: String,
-                    required: true,
                 },
             },
         ],
-        apiRef: {
-            type: Number,
-            required: true,
-            unique: true,
+        volume: {
+            apiRef: {
+                type: String,
+            },
+            name: {
+                type: String,
+            },
         },
-        avgPrice: [
+        image: {
+            icon_url: {},
+            original_url: {},
+        },
+        owners: [
             {
-                type: mongoose.Types.ObjectId,
-                ref: 'Price',
+                type: mongoose.Types.ObjectId, ref: 'User',
             },
         ],
+
     },
     {
         timestamps: true,
