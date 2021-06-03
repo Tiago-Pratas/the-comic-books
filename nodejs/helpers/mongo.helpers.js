@@ -1,3 +1,5 @@
+//functions to use as getters or setters in models
+
 const removeNewlines = (aliases) => {
     if (aliases === null || aliases === '') return false;
 
