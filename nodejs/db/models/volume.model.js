@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { removeNewlines } from '../../helpers/mongo.helpers.js';
+import { removeTags } from '../../helpers/mongo.helpers.js';
 
 const VolumeSchema = mongoose.Schema(
     {
@@ -24,12 +24,42 @@ const VolumeSchema = mongoose.Schema(
                 },
             },
         ],
+        image: {
+            type: String,
+        },
+        start_year: {
+            type: String,
+        },
+        first_issue: {
+            apiRef: {
+                type: String,
+            },
+            issue_number: {
+                type: String,
+            },
+            name: {
+                type: String,
+            },
+        },
+        issues: [
+            {
+                name: {
+                    type: String,
+                },
+                apiRef: {
+                    type: String,
+                },
+                issue_number: {
+                    type: String,
+                },
+            },
+        ],
         count_of_issues: {
             type: Number,
         },
         description: {
             type: String,
-            set: removeNewlines,
+            set: removeTags,
         },
         publisher: {
             apiRef: {

@@ -3,7 +3,7 @@ import { removeNewlines, removeTags } from '../../helpers/mongo.helpers.js';
 
 const CharacterSchema = mongoose.Schema({
     aliases: {
-        type: Array,
+        type: [String],
         set: removeNewlines,
     },
     name: {
@@ -141,4 +141,4 @@ const CharacterSchema = mongoose.Schema({
     timestamps: true,
 });
 
-export const Character = mongose.model('Character', CharacterSchema);
+export const Character = mongoose.model('Character', CharacterSchema);

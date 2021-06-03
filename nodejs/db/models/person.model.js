@@ -1,9 +1,22 @@
 import mongoose from 'mongoose';
+import { removeNewlines } from '../../helpers/mongo.helpers.js';
 
 const PersonSchema = mongoose.Schema({
     aliases: {
         type: String,
         set: removeNewlines,
+    },
+    apiRef: {
+        type: String,
+    },
+    deck: {
+        type: String,
+    },
+    count_of_issue_appearances: {
+        type: String,
+    },
+    image: {
+        type: String,
     },
     birth: {
         type: String,
@@ -38,11 +51,5 @@ const PersonSchema = mongoose.Schema({
     timestamps: true,
 });
 
-const removeNewlines = (aliases) => {
-    if (aliases === null || aliases === '') return false;
-
-    return aliases.split(/\r\n|\r|\n/);
-};
-
-export const Person = ('Person', PersonSchema);
+export const Person = mongoose.model('Person', PersonSchema);
 

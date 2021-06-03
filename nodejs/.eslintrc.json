@@ -30,6 +30,7 @@
             }
             
         ],
-        "valid-jsdoc": 0
+        "valid-jsdoc": 0,
+        "camelcase": 0
     }
 }

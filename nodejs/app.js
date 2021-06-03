@@ -4,7 +4,15 @@ import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { connect } from './db/mongoose.js';
-import { authRoutes, issueRoutes, volumeRoutes, mainRoutes, marketRoutes } from './routes/index.js';
+import { authRoutes,
+    issueRoutes,
+    volumeRoutes,
+    marketRoutes,
+    characterRoutes,
+    teamRoutes,
+    personRoutes,
+    publisherRoutes,
+    storyArcRoutes } from './routes/index.js';
 import { isAuthenticated } from './middleware/auth.middleware.js';
 import './services/passport.js';
 
@@ -38,15 +46,21 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //use bodyparser
+app.use(express.json({ limit: '3mb' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //<-- Routes -->
-app.use('/', mainRoutes);
 app.use('/auth', authRoutes);
+app.use('/issues', issueRoutes);
+app.use('/volumes', volumeRoutes);
+app.use('/characters', characterRoutes);
+app.use('/teams', teamRoutes);
+app.use('/persons', personRoutes);
+app.use('/publishers', publisherRoutes);
+app.use('/story-arc', storyArcRoutes);
 app.use('/market', isAuthenticated, marketRoutes);
-app.use('/volumes', isAuthenticated, volumeRoutes);
-app.use('/issues', isAuthenticated, issueRoutes);
+
 
 //<-- exception handling -->
 app.use('*', (req, res, next) => {
