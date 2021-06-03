@@ -1,7 +1,7 @@
 import passport from 'passport';
 import crypto from 'crypto';
-import {sendEmailToken} from '../services/nodemailer.js';
-import { Token, User } from '../db/index.js'
+import { sendEmailToken } from '../services/nodemailer.js';
+import { Token, User } from '../db/index.js';
 
 
 /**
@@ -50,7 +50,7 @@ const loginPost = (req, res, next) => {
             return res.send(userLogged);
         });
 
-        /* return res.json(user); */
+        /*return res.json(user); */
     })(req, res, next);
 };
 
@@ -80,8 +80,8 @@ const checkSession = async (req, res) => {
     }
 };
 
-/* POST /verify/resend
-* resend token email
+/*POST /verify/resend
+*resend token email
 */
 const resendToken = async (req, res, next) => {
     try {
@@ -137,7 +137,7 @@ const verifyToken = async (req, res, next) => {
                 { isActive: true },
                 { new: true },
             );
-            
+
             updatedUser.password = null;
 
             return res.status(200).json(updatedUser);
@@ -151,11 +151,9 @@ const verifyToken = async (req, res, next) => {
 
             return res.json('Your password has been updated');
         }
-
-
     } catch (err) {
         next(err);
-    } 
+    }
 };
 
 /**
@@ -168,9 +166,9 @@ const resetPassword = async (req, res, next) => {
 
         const updateUser = await User.findOneAndUpdate({ email },
             { pwdReset: true },
-            {new: true});
+            { new: true });
 
-        if(!updateUser) return res.json('Make sure your address is correct');
+        if (!updateUser) return res.json('Make sure your address is correct');
 
         const newToken = new Token({
             userId: req.body.id,
@@ -195,5 +193,5 @@ export {
     checkSession,
     resendToken,
     verifyToken,
-    resetPassword
+    resetPassword,
 };

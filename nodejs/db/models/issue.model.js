@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { removeTags } from '../../helpers/mongo.helpers.js';
 
 const IssueSchema = mongoose.Schema(
     {
@@ -21,7 +22,7 @@ const IssueSchema = mongoose.Schema(
                 },
             },
         ],
-        chracter_dies_in: [
+        character_dies_in: [
             {
                 apiRef: {
                     type: Number,
@@ -38,7 +39,7 @@ const IssueSchema = mongoose.Schema(
         },
         description: {
             type: String,
-            //create a function that will remove all html tags
+            set: removeTags,
         },
         issue_number: {
             type: String,
@@ -65,8 +66,7 @@ const IssueSchema = mongoose.Schema(
             },
         },
         image: {
-            icon_url: {},
-            original_url: {},
+            type: String,
         },
         owners: [
             {

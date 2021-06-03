@@ -36,6 +36,5 @@ const PriceSchema = mongoose.Schema({
     },
 });
 
-const Price = mongoose.model('Price', PriceSchema);
+export const Price = mongoose.model('Price', PriceSchema);
 
-export { Price };

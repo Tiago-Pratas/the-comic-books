@@ -3,5 +3,5 @@ import { User } from './models/user.model.js';
 
 export {
     Token,
-    User
+    User,
 };
