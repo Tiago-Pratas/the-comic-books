@@ -1,10 +1,10 @@
 import React from 'react';
-import { Header }  from '../../components/Header/header';
+import Register from '../../components/Register/register';
 
 const Auth = () => {
     return <div>
         Auth
-        <Header />
+        <Register />
     </div>;
 };
 

@@ -2,12 +2,14 @@ import axios from 'axios';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
+console.log(`${serverUrl}/auth/register`);
+
 const AuthService = {
     register: async (userData) => {
         try {
-            const request = await axios.post(`${serverUrl}/register`, userData, { withCredentials: true});
-            
-            return request.data;
+            const request = await axios.post(`${serverUrl}/auth/register`, userData, { withCredentials: true});
+            console.log(request.data.results);
+            return request.data.results;
 
         } catch (error) {
             return error;
@@ -17,7 +19,7 @@ const AuthService = {
 
     login: async (userData) => {
         try {
-            const request = await axios.post(`${serverUrl}/login`, userData, { withCredentials: true });
+            const request = await axios.post(`${serverUrl}/auth/login`, userData, { withCredentials: true });
         
             return request.data;
     

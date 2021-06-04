@@ -4,5 +4,5 @@ const Header = () => {
     return <div>NavBar</div>;
 };
 
-export { Header }
+export { Header };
 

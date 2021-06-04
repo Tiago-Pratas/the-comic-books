@@ -3,6 +3,6 @@ import { authSlice } from './slices/auth.slice';
 
 export default configureStore({
     reducer: {
-        auth: authSlice.reducer
+        auth: authSlice.reducer,
     }
 });
