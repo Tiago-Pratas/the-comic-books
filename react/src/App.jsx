@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Auth }  from './pages/Auth/auth';
+import Auth  from './pages/Auth/Auth';
 
 function App() {
   

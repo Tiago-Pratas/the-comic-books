@@ -2,21 +2,17 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { registerAsync } from '../../redux/slices/auth.slice';
 
-const initialState = {
-    username: '',
-    email: '',
-    password: '',
-};
+
 
 const Register = () => {
-    const [formData, setFormData ] = useState(initialState);
+    const [formData, setFormData ] = useState({});
     const dispatch = useDispatch();
 
     const handleSubmit = (ev) => {
         ev.preventDefault();
 
         dispatch(registerAsync(formData));
-        setFormData(initialState);
+        setFormData({});
     };
 
     const handleInputChange = (ev) => {

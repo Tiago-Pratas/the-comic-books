@@ -8,8 +8,7 @@ const AuthService = {
     register: async (userData) => {
         try {
             const request = await axios.post(`${serverUrl}/auth/register`, userData, { withCredentials: true});
-            console.log(request.data.results);
-            return request.data.results;
+            return request.data;
 
         } catch (error) {
             return error;
@@ -20,7 +19,7 @@ const AuthService = {
     login: async (userData) => {
         try {
             const request = await axios.post(`${serverUrl}/auth/login`, userData, { withCredentials: true });
-        
+            console.log(userData);
             return request.data;
     
         } catch (error) {

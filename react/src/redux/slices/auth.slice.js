@@ -6,6 +6,10 @@ export const registerAsync = createAsyncThunk('auth/register', async (data) => {
     return await AuthService.register(data);
 });
 
+export const loginAsync = createAsyncThunk('auth/login', async (data) => {
+    return await AuthService.login(data);
+});
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
@@ -16,15 +20,25 @@ export const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(registerAsync.fulfilled, (state, action) => {
-            if (action.payload.response.status != 500) {
-                console.log(action.payload.response.status);
+            if (action.payload.status != 500) {
                 state.user = action.payload;
                 state.hasUser = true;
                 state.error = '';
             } else {
-                console.log(action.payload.response.data);
+                console.log(action);
                 state.hasUser = false;
                 state.error = action.payload.response.data;
+            }
+        });
+
+        builder.addCase(loginAsync.fulfilled, (state, action) => {
+            if (action.payload.email) {
+                state.user = action.payload;
+                state.hasUser = true;
+                state.error = '';
+            } else {
+                state.hasUser = false;
+                state.error = action.payload;
             }
         });
     },
