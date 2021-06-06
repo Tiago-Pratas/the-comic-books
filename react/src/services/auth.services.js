@@ -7,7 +7,10 @@ console.log(`${serverUrl}/auth/register`);
 const AuthService = {
     register: async (userData) => {
         try {
-            const request = await axios.post(`${serverUrl}/auth/register`, userData, { withCredentials: true});
+            const request = await axios.post(`${serverUrl}/auth/register`,
+                userData,
+                { withCredentials: true });
+
             return request.data;
 
         } catch (error) {
@@ -18,10 +21,11 @@ const AuthService = {
 
     login: async (userData) => {
         try {
-            const request = await axios.post(`${serverUrl}/auth/login`, userData, { withCredentials: true });
-            console.log(userData);
+            const request = await axios.post(`${serverUrl}/auth/login`,
+                userData, 
+                { withCredentials: true });
+
             return request.data;
-    
         } catch (error) {
             return error;
         }
@@ -29,7 +33,8 @@ const AuthService = {
 
     checkSession:async () => {
         try {
-            const request = await axios.get(`${serverUrl}/check-session`, {withCredentials: true});
+            const request = await axios.get(`${serverUrl}/check-session`,
+                { withCredentials: true });
             
             return request.data;
 
@@ -39,7 +44,9 @@ const AuthService = {
     },
     
     logout: async (user) => {
-        const request = await axios.post(`${serverUrl}/logout`, user, {withCredentials: true});
+        const request = await axios.post(`${serverUrl}/logout`, 
+            user, 
+            { withCredentials: true });
     
         return request;
     },

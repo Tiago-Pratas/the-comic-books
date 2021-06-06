@@ -23,13 +23,13 @@ const Register = () => {
     return(
         <div className="shadow p-3 mb-5 bg-body rounded login-container">
             <form className="form" onSubmit={handleSubmit}>
-                <label htmlFor="username" className="col-sm-2 col-form-label">
+                <label htmlFor="username" className="col-sm-2 rounded col-form-label">
                     Username
                 </label>
                 <input
                     type="text"
                     name="username"
-                    className="form-control input"
+                    className="form-input block w-full my-4d"
                     autoComplete="username"
                     id="username"
                     onChange={handleInputChange}
