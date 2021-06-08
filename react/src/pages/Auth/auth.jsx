@@ -5,20 +5,25 @@ const Auth = () => {
     const [showForm, setShowForm] = useState('login');
 
     return (
-        <div>
-            <div className="form-container__controls">
-                <button
-                    className="form-container__controls-btn btn-blue"
-                    onClick={() => setShowForm('login')}
-                >
-                    Login
-                </button>
-                <button
-                    className="form-container__controls-btn btn-blue"
-                    onClick={() => setShowForm('register')}
-                >
-                    Registro
-                </button>
+        <div className="">
+            <div className="flex justify-center pt-10">
+                <div className="px-4">
+                    <button
+                        className="btn btn-yellow"
+                        onClick={() => setShowForm('login')}
+                    >
+                        Login
+                    </button>
+                </div>
+
+                <div className="px-4">
+                    <button
+                        className="btn btn-yellow"
+                        onClick={() => setShowForm('register')}
+                    >
+                        Register
+                    </button>
+                </div>
             </div>
 
             <div className="form-container">

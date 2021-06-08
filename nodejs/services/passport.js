@@ -82,7 +82,7 @@ const loginStrategy = new LocalStrategy(customFields, async (req, email, passwor
         }
 
         //if user hasn't verified their email address
-        if (!currentUser.isVerified) {
+        if (!currentUser.isActive) {
             const error = new Error('Please verify your email');
             return done(error);
         }

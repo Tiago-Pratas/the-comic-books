@@ -1,11 +1,12 @@
 import React from 'react';
-import './App.css';
+import './tailwind.output.css';
+import { Header } from './components/index';
 import Auth  from './pages/Auth/Auth';
 
 function App() {
   
     return <div>
-      App
+        <Header />
         <Auth />
     </div>;
 }

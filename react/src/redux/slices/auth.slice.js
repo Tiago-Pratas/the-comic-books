@@ -15,17 +15,22 @@ export const authSlice = createSlice({
     initialState: {
         user: null,
         hasUser: null,
-        error: {},
+        error: '',
     },
-    reducers: {},
+    reducers: {
+        matchPasswords: (state) => {
+            state.user = null,
+            state.hasUser= false,
+            state.error = 'Passwords do not match';
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(registerAsync.fulfilled, (state, action) => {
-            if (action.payload.status != 500) {
+            if (action.payload.response.status != 500) {
                 state.user = action.payload;
                 state.hasUser = true;
                 state.error = '';
             } else {
-                console.log(action);
                 state.hasUser = false;
                 state.error = action.payload.response.data;
             }
@@ -43,3 +48,5 @@ export const authSlice = createSlice({
         });
     },
 });
+
+export const { matchPasswords } = authSlice.actions;
