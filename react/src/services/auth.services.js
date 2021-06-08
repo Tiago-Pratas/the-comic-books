@@ -52,10 +52,29 @@ const AuthService = {
     },
     
     sendEmailValidation: async (email, token) => {
-        const request = await axios.post(`${serverUrl}/${email}/${token}`);    
-        
-        return request.data.username;
+        try {
+            const request = await axios.post(`${serverUrl}/${email}/${token}`);    
+            
+            return request.data.username;
+            
+        } catch (error) {
+            return error;
+        }
     },
+
+    googleLogin: async () => {
+
+        try {
+            const request = await axios.get(`${serverUrl}/auth/google`, { withCredentials: true });
+    
+            console.log('here', request);
+    
+            return request;
+            
+        } catch (error) {
+            return error;
+        }
+    }
     
     
 };

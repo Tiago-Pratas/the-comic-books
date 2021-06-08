@@ -186,6 +186,25 @@ const resetPassword = async (req, res, next) => {
     }
 };
 
+const googleLogin = (req, res, next) => {
+    try {
+        passport.authenticate('google', { scope: ['profile', 'email'],
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const googleReturn = (req, res, next) => {
+    try {
+        passport.authenticate('google');
+
+        res.redirect('/');
+    } catch (error) {
+        next(error);
+    }
+};
+
 export {
     registerPost,
     loginPost,
@@ -194,4 +213,6 @@ export {
     resendToken,
     verifyToken,
     resetPassword,
+    googleLogin,
+    googleReturn,
 };

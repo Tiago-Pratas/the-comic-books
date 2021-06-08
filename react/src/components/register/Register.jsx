@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerAsync, matchPasswords } from '../../redux/slices/auth.slice';
+import { registerAsync, matchPasswords, googleLoginAsync } from '../../redux/slices/auth.slice';
 import Google from '../../assets/google.svg?component';
 import Twitter from '../../assets/twitter.svg?component';
 
@@ -18,6 +18,10 @@ const Register = () => {
         }
         console.log(formData);
         dispatch(registerAsync(formData));
+    };
+
+    const handleGoogleLogin = ()  =>{
+        return dispatch(googleLoginAsync());
     };
 
     const handleInputChange = (ev) => {
@@ -166,56 +170,57 @@ const Register = () => {
                                 Sign Up
                                 </button>
                             </div>
-                            <div className="flex flex-col space-y-5">
-                                <span className="flex items-center justify-center space-x-2">
-                                    <span className="h-px bg-gray-400 w-14"></span>
-                                    <span className="font-normal text-gray-500">or login with</span>
-                                    <span className="h-px bg-gray-400 w-14"></span>
-                                </span>
-                                <div className="flex flex-col space-y-4">
-                                    <a
-                                        href="#"
-                                        className="flex items-center 
-                                        justify-center px-4 py-2 space-x-2 
-                                        transition-colors duration-300 border border-gray-800 
-                                        rounded-md group hover:bg-gray-800 focus:outline-none"
-                                    >
-                                        <span>
-                                            <Google />
-                                        </span>
-                                        <span className="text-sm 
-                                            font-medium text-gray-800 
-                                            group-hover:text-white">Google</span>
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="flex items-center 
-                                        justify-center px-4 py-2 
-                                        space-x-2 transition-colors 
-                                        duration-300 border border-blue-500 
-                                        rounded-md group hover:bg-blue-500 
-                                        focus:outline-none"
-                                    >
-                                        <span>
-                                            <Twitter />
-                                            {console.log(Twitter)}
-                                        </span>
-                                        <span className="text-sm font-medium 
-                                        text-blue-500 group-hover:text-white">Twitter</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <hr className="mb-6 border-t" />
-                            <div className="text-center">
-                                <a className="inline-block
-                                text-sm text-blue-500 
-                                align-baseline hover:text-blue-800"
-                                href="./login"
+                        </form>
+                        <div className="flex flex-col space-y-5">
+                            <span className="flex items-center justify-center space-x-2">
+                                <span className="h-px bg-gray-400 w-14"></span>
+                                <span className="font-normal text-gray-500">or login with</span>
+                                <span className="h-px bg-gray-400 w-14"></span>
+                            </span>
+                            <div className="flex flex-col space-y-4">
+                                <a
+                                    href="#"
+                                    className="flex items-center 
+                                    justify-center px-4 py-2 space-x-2 
+                                    transition-colors duration-300 border border-gray-800 
+                                    rounded-md group hover:bg-gray-800 focus:outline-none"
+                                    onClick={handleGoogleLogin}
                                 >
-                                Already have an Account!
+                                    <span>
+                                        <Google />
+                                    </span>
+                                    <span className="text-sm 
+                                        font-medium text-gray-800 
+                                        group-hover:text-white">Google</span>
+                                </a>
+                                <a
+                                    href="#"
+                                    className="flex items-center 
+                                    justify-center px-4 py-2 
+                                    space-x-2 transition-colors 
+                                    duration-300 border border-blue-500 
+                                    rounded-md group hover:bg-blue-500 
+                                    focus:outline-none"
+                                >
+                                    <span>
+                                        <Twitter />
+                                        {console.log(Twitter)}
+                                    </span>
+                                    <span className="text-sm font-medium 
+                                    text-blue-500 group-hover:text-white">Twitter</span>
                                 </a>
                             </div>
-                        </form>
+                        </div>
+                        <hr className="mb-6 border-t" />
+                        <div className="text-center">
+                            <a className="inline-block
+                            text-sm text-blue-500 
+                            align-baseline hover:text-blue-800"
+                            href="./login"
+                            >
+                            Already have an Account!
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -10,6 +10,10 @@ export const loginAsync = createAsyncThunk('auth/login', async (data) => {
     return await AuthService.login(data);
 });
 
+export const googleLoginAsync = createAsyncThunk('auth/google', async () => {
+    return await AuthService.googleLogin();
+});
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
@@ -38,6 +42,18 @@ export const authSlice = createSlice({
 
         builder.addCase(loginAsync.fulfilled, (state, action) => {
             if (action.payload.email) {
+                state.user = action.payload;
+                state.hasUser = true;
+                state.error = '';
+            } else {
+                state.hasUser = false;
+                state.error = action.payload;
+            }
+        });
+
+        builder.addCase(googleLoginAsync.fulfilled, (state, action) => {
+            console.log(action.payload);
+            if (action.payload) {
                 state.user = action.payload;
                 state.hasUser = true;
                 state.error = '';

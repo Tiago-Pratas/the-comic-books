@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import { User } from '../db/models/user.model.js';
 import { Token } from '../db/models/token.model.js';
 import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 const customFields = {
     usernameField: 'email',
@@ -34,7 +35,7 @@ const registerStrategy = new LocalStrategy(customFields, async (req, email, pass
 
         //check if the email is unique
         if (prevUser) {
-            const error = new Error('Credentials are not valid');
+            const error = new Error('This email is already registered');
             return done(error);
         }
 
@@ -103,5 +104,34 @@ const loginStrategy = new LocalStrategy(customFields, async (req, email, passwor
     }
 });
 
+const GoogleLogin = new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: '/auth/google-return',
+},
+
+async (accessToken, refreshToken, profile, cb) => {
+    const currentUser = await User.findOne({ googleId: profile.id });
+    if (currentUser) {
+        //if we already have a record with the given profile ID
+        return done(null, currentUser);
+    } else {
+        //if not, create a new user
+        const newUser = new User({
+            googleId: profile.id,
+            username: profile.getUsername(),
+            image: profile.getImageUrl(),
+            email: profile.email,
+            isActive: true,
+        });
+
+        const savedUser = await newUser.save();
+
+        return done(null, savedUser);
+    }
+});
+
+
 passport.use('register', registerStrategy);
 passport.use('login', loginStrategy);
+passport.use('google', GoogleLogin);
