@@ -16,7 +16,6 @@ const Register = () => {
         if (formData.password != formData.confirmPassword) {
             return dispatch(matchPasswords());
         }
-        console.log(formData);
         dispatch(registerAsync(formData));
     };
 
@@ -29,7 +28,6 @@ const Register = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    console.log(formData);
 
     return(
         <div className="container mx-auto">
@@ -204,7 +202,6 @@ const Register = () => {
                                 >
                                     <span>
                                         <Twitter />
-                                        {console.log(Twitter)}
                                     </span>
                                     <span className="text-sm font-medium 
                                     text-blue-500 group-hover:text-white">Twitter</span>

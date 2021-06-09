@@ -9,7 +9,6 @@ const Login = () => {
     const error  = useSelector(state => state.auth.error);
     const dispatch = useDispatch();
 
-    console.log('here', Twitter);
 
     const handleFormSubmit = (ev) => {
         ev.preventDefault();
@@ -152,7 +151,6 @@ const Login = () => {
                                     >
                                         <span>
                                             <Twitter />
-                                            {console.log(Twitter)}
                                         </span>
                                         <span className="text-sm font-medium 
                                         text-blue-500 group-hover:text-white">Twitter</span>
