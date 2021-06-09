@@ -110,24 +110,31 @@ const GoogleLogin = new GoogleStrategy({
     callbackURL: '/auth/google-return',
 },
 
-async (accessToken, refreshToken, profile, cb) => {
-    const currentUser = await User.findOne({ googleId: profile.id });
-    if (currentUser) {
-        //if we already have a record with the given profile ID
-        return done(null, currentUser);
-    } else {
-        //if not, create a new user
-        const newUser = new User({
-            googleId: profile.id,
-            username: profile.getUsername(),
-            image: profile.getImageUrl(),
-            email: profile.email,
-            isActive: true,
-        });
+async (accessToken, refreshToken, profile, done) => {
+    try {
+        const currentUser = await User.findOne({ googleId: profile.id });
+        if (currentUser) {
+            //if we already have a record with the given profile ID
+            return done(null, currentUser);
+        } else {
+            //if not, create a new user
+            const newUser = new User({
+                googleId: profile.id,
+                password: null,
+                email: profile.emails[0].value,
+                username: profile.displayName,
+                isActive: true,
+                profilePic: profile.photos[0].value,
+            });
 
-        const savedUser = await newUser.save();
+            const savedUser = await newUser.save();
 
-        return done(null, savedUser);
+            savedUser.googleId = null;
+
+            return done(null, savedUser);
+        }
+    } catch (error) {
+        return done(error);
     }
 });
 

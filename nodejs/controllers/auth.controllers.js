@@ -186,20 +186,21 @@ const resetPassword = async (req, res, next) => {
     }
 };
 
+//GET auth/google
 const googleLogin = (req, res, next) => {
     try {
-        passport.authenticate('google', { scope: ['profile', 'email'],
-        });
+        passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
     } catch (error) {
         next(error);
     }
 };
 
+//GET auth/google-return
 const googleReturn = (req, res, next) => {
     try {
-        passport.authenticate('google');
+        passport.authenticate('google')(req, res, next);
 
-        res.redirect('/');
+        res.json(req.user);
     } catch (error) {
         next(error);
     }

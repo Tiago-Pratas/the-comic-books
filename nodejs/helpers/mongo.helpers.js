@@ -12,7 +12,12 @@ const removeTags = (description) => {
     return description.replace( /(<([^>]+)>)/ig, '');
 };
 
+const setPassword = (password) => {
+    if (password === undefined) return null;
+};
+
 export {
+    setPassword,
     removeNewlines,
     removeTags,
 };

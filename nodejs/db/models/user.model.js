@@ -16,11 +16,9 @@ const UserSchema = mongoose.Schema(
             required: true,
             trim: true,
             minlength: 5,
-            unique: true,
         },
         password: {
-            type: String,
-            required: true,
+            type: String || null,
             minlength: 8,
             trim: true,
         },
@@ -29,7 +27,7 @@ const UserSchema = mongoose.Schema(
             default: false,
             required: true,
         },
-        googleID: {
+        googleId: {
             type: String,
         },
         role: {
