@@ -20,4 +20,8 @@ router.get('/google', controller.googleLogin);
 
 router.get('/google-return', controller.googleReturn);
 
+router.get('/twitter', controller.twitterLogin);
+
+router.get('/twitter-return', controller.twitterReturn);
+
 export { router };

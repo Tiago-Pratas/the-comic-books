@@ -5,6 +5,7 @@ import { User } from '../db/models/user.model.js';
 import { Token } from '../db/models/token.model.js';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as TwitterStrategy } from 'passport-twitter';
 
 const customFields = {
     usernameField: 'email',
@@ -16,6 +17,7 @@ const salt = 10;
 
 //serialise session for user
 passport.serializeUser((user, done) => {
+    console.log('here', user.id);
     return done(null, user._id);
 });
 
@@ -138,7 +140,42 @@ async (accessToken, refreshToken, profile, done) => {
     }
 });
 
+const TwitterLogin = new TwitterStrategy({
+    consumerKey: process.env.TWITTER_API_KEY,
+    consumerSecret: process.env.TWITTER_SECRET,
+    callbackURL: '/auth/twitter-return',
+},
+async (token, tokenSecret, profile, done) => {
+    try {
+        const currentUser = await User.findOne({ twitterId: profile.id });
+        if (currentUser) {
+            //if we already have a record with the given profile ID
+            return done(null, currentUser);
+        } else {
+            console.log(profile);
+            //if not, create a new user
+            const newUser = new User({
+                googleId: profile.id,
+                password: null,
+                email: profile.emails[0].value,
+                username: profile.displayName,
+                isActive: true,
+                profilePic: profile.photos[0].value,
+            });
+
+            const savedUser = await newUser.save();
+
+            savedUser.googleId = null;
+
+            return done(null, savedUser);
+        }
+    } catch (error) {
+        return done(error);
+    }
+});
+
 
 passport.use('register', registerStrategy);
 passport.use('login', loginStrategy);
 passport.use('google', GoogleLogin);
+passport.use('twitter', TwitterLogin);

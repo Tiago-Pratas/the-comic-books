@@ -1,0 +1,7 @@
+.env
+.DS_STORE
+.vs_code
+tailwind.output.css
+node_modules/
+.gitingnore
+

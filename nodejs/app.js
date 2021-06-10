@@ -38,7 +38,7 @@ app.use(function(req, res, next) {
 //use cookieparser
 app.use(
     session({
-        secret: process.env.JWT_SECRET,
+        secret: process.env.APP_SECRET,
         resave: false,
         saveUninitialized: false,
         cookie: {

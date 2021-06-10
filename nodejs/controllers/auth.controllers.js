@@ -15,16 +15,14 @@ const registerPost = (req, res, next) => {
         const error = new Error('User, email and password are required');
         return next(error);
     }
-    passport.authenticate('register', (error, user, token) => {
+    passport.authenticate('register', (error, token) => {
         if (error) {
             return next(error);
         }
         //send email with verification link
         sendEmailToken(email, token.verificationToken, req.get('origin'));
-        const userRegister = user;
-        userRegister.password = null;
 
-        return res.json(userRegister);
+        return res.json('User has been registered, please check your email');
     })(req, res, next);
 };
 
@@ -70,10 +68,8 @@ const logoutPost = (req, res) => {
 
 //auth/check-session
 const checkSession = async (req, res) => {
-    if (req.user) {
-        const registeredUser = req.user;
-        registeredUser.password = null;
-        return re.json(registeredUser);
+    if (req.session) {
+        return res.json(req.user);
     } else {
         const error = new Error('Unexpected error');
         return res.status(401).json(error.message);
@@ -125,8 +121,6 @@ const resendToken = async (req, res, next) => {
 const verifyToken = async (req, res, next) => {
     try {
         const { email, verificationToken } = req.params;
-
-        console.log(email);
 
         const foundToken = await Token.findOne({ email, verificationToken });
 
@@ -198,13 +192,56 @@ const googleLogin = (req, res, next) => {
 //GET auth/google-return
 const googleReturn = (req, res, next) => {
     try {
-        passport.authenticate('google')(req, res, next);
-
-        res.json(req.user);
+        passport.authenticate('google', (error, user) => {
+            if (error) {
+                res.json(error.message);
+                return;
+            }
+            req.login(user, (error) => {
+                if (error) {
+                    res.send(error.message);
+                    return;
+                }
+                const userLogged = user;
+                userLogged.password = null;
+                res.status(302).redirect(`${process.env.CLIENT_URL}`);
+            });
+        })(req, res);
     } catch (error) {
         next(error);
     }
 };
+
+const twitterLogin = (req, res, next) => {
+    try {
+        passport.authenticate('twitter', { scope: ['profile', 'email'] })(req, res, next);
+    } catch (error) {
+        next(error);
+    }
+};
+
+const twitterReturn = (req, res, next) => {
+    try {
+        passport.authenticate('twitter', (error, user) => {
+            if (error) {
+                res.json(error.message);
+                return;
+            }
+            req.login(user, (error) => {
+                if (error) {
+                    res.send(error.message);
+                    return;
+                }
+                const userLogged = user;
+                userLogged.password = null;
+                res.status(302).redirect(`${process.env.CLIENT_URL}`);
+            });
+        })(req, res);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 export {
     registerPost,
@@ -216,4 +253,6 @@ export {
     resetPassword,
     googleLogin,
     googleReturn,
+    twitterLogin,
+    twitterReturn,
 };

@@ -18,7 +18,7 @@ const UserSchema = mongoose.Schema(
             minlength: 5,
         },
         password: {
-            type: String || null,
+            type: String,
             minlength: 8,
             trim: true,
         },
@@ -28,6 +28,9 @@ const UserSchema = mongoose.Schema(
             required: true,
         },
         googleId: {
+            type: String,
+        },
+        twitterId: {
             type: String,
         },
         role: {

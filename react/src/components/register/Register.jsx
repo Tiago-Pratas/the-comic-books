@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerAsync, matchPasswords, googleLoginAsync } from '../../redux/slices/auth.slice';
+import { registerAsync, matchPasswords } from '../../redux/slices/auth.slice';
 import Google from '../../assets/google.svg?component';
 import Twitter from '../../assets/twitter.svg?component';
 
@@ -19,9 +19,6 @@ const Register = () => {
         dispatch(registerAsync(formData));
     };
 
-    const handleGoogleLogin = ()  =>{
-        return dispatch(googleLoginAsync());
-    };
 
     const handleInputChange = (ev) => {
         const { value, name } = ev.target;
@@ -177,12 +174,12 @@ const Register = () => {
                             </span>
                             <div className="flex flex-col space-y-4">
                                 <a
-                                    href="#"
+                                    href={`${import.meta.env.VITE_SERVER_URL}/auth/google`}
                                     className="flex items-center 
                                     justify-center px-4 py-2 space-x-2 
                                     transition-colors duration-300 border border-gray-800 
                                     rounded-md group hover:bg-gray-800 focus:outline-none"
-                                    onClick={handleGoogleLogin}
+                                    
                                 >
                                     <span>
                                         <Google />

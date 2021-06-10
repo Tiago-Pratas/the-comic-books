@@ -19,6 +19,7 @@ export const authSlice = createSlice({
     initialState: {
         user: null,
         hasUser: null,
+        status: null,
         error: '',
     },
     reducers: {
@@ -30,8 +31,9 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(registerAsync.fulfilled, (state, action) => {
-            if (action.payload.response.status != 500) {
-                state.user = action.payload;
+            console.log(action);
+            if (action.payload.status != 500) {
+                state.status = action.payload;
                 state.hasUser = true;
                 state.error = '';
             } else {
