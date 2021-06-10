@@ -14,6 +14,10 @@ export const googleLoginAsync = createAsyncThunk('auth/google', async () => {
     return await AuthService.googleLogin();
 });
 
+export const checkSessionAsync = createAsyncThunk('auth/checksession', async () => {
+    return await AuthService.checkSession();
+});
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
@@ -50,6 +54,18 @@ export const authSlice = createSlice({
             } else {
                 state.hasUser = false;
                 state.error = action.payload;
+            }
+        });
+
+        builder.addCase(checkSessionAsync.fulfilled, (state, action) => {
+            console.log(action);
+            if(action.payload.email) {
+                state.user = action.payload;
+                state.hasUser = true;
+                state.error = '';
+            }else {
+                state.hasUser = false;
+                state.error = action.payload.message;
             }
         });
 

@@ -31,10 +31,12 @@ const AuthService = {
         }
     },
 
-    checkSession:async () => {
+    checkSession: async () => {
         try {
-            const request = await axios.get(`${serverUrl}/check-session`,
+            const request = await axios.get(`${serverUrl}/auth/check-session`,
                 { withCredentials: true });
+
+            console.log(request);
             
             return request.data;
 
