@@ -12,8 +12,9 @@ const saveIssuesPOST = async (req, res, next) => {
             issue_number,
             person_credits,
             volume,
-            image,
         } = req.body;
+
+        const { image } = req.body.image.original_url;
         //make sure there is no issue on DB
         const foundIssue = await Issue.findOne({ apiRef });
 

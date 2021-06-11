@@ -2,8 +2,6 @@ import axios from 'axios';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-console.log(`${serverUrl}/auth/register`);
-
 const AuthService = {
     register: async (userData) => {
         try {
@@ -35,8 +33,6 @@ const AuthService = {
         try {
             const request = await axios.get(`${serverUrl}/auth/check-session`,
                 { withCredentials: true });
-
-            console.log(request);
             
             return request.data;
 
@@ -68,9 +64,7 @@ const AuthService = {
 
         try {
             const request = await axios.get(`${serverUrl}/auth/google`, { withCredentials: true });
-    
-            console.log('here', request);
-    
+        
             return request;
             
         } catch (error) {

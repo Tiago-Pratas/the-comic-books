@@ -35,7 +35,6 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(registerAsync.fulfilled, (state, action) => {
-            console.log(action);
             if (action.payload.status != 500) {
                 state.status = action.payload;
                 state.hasUser = true;
