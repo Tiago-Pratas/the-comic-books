@@ -57,7 +57,6 @@ export const authSlice = createSlice({
         });
 
         builder.addCase(checkSessionAsync.fulfilled, (state, action) => {
-            console.log(action);
             if(action.payload.email) {
                 state.user = action.payload;
                 state.hasUser = true;
@@ -69,7 +68,6 @@ export const authSlice = createSlice({
         });
 
         builder.addCase(googleLoginAsync.fulfilled, (state, action) => {
-            console.log('here', action.payload);
             if (action.payload.response != undefined) {
                 state.user = action.payload;
                 state.hasUser = true;

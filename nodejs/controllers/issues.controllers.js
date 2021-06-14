@@ -14,7 +14,7 @@ const saveIssuesPOST = async (req, res, next) => {
             volume,
         } = req.body;
 
-        const { image } = req.body.image.original_url;
+        const image = req.body.image.original_url;
         //make sure there is no issue on DB
         const foundIssue = await Issue.findOne({ apiRef });
 
@@ -33,11 +33,13 @@ const saveIssuesPOST = async (req, res, next) => {
             });
 
             const savedIssue = await newIssue.save();
+            console.log('lost', savedIssue);
 
             return res.json(savedIssue);
-        }
-
-        return res.status(403).json('An instace of this issue already exists');
+        } else {
+            console.log('found', foundIssue);
+            return res.json(foundIssue);
+        };
     } catch (error) {
         return next(error);
     }
@@ -45,13 +47,11 @@ const saveIssuesPOST = async (req, res, next) => {
 
 const findIssuesGET = async (req, res, next) => {
     try {
-        const { apiRef } = req.body;
+        const { apiRef } = req.params;
 
         const foundIssue = await Issue.findOne({ apiRef });
 
-        return !foundIssue ?
-            res.json('There are no issues') :
-            res.json(foundIssue);
+        return res.json(foundIssue);
     } catch (error) {
         return next(error);
     }

@@ -12,7 +12,7 @@ router.post('/save', Controllers.saveIssuesPOST);
  * GET issues/find
  * find issues in DB
  */
-router.get('/find', Controllers.findIssuesGET);
+router.get('/find/:apiRef', Controllers.findIssuesGET);
 
 /**
  * POST issues/colecction
