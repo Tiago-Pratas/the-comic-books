@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAsync } from '../../redux/slices/auth.slice';
-import Google from '../../assets/google.svg?component';
-import Twitter from '../../assets/twitter.svg?component';
+import { GoogleAuth, TwitterAuth } from '../index';
 
 const Login = () => {
     const [formData, setFormData] = useState({});
@@ -126,35 +125,8 @@ const Login = () => {
                                     <span className="h-px bg-gray-400 w-14"></span>
                                 </span>
                                 <div className="flex flex-col space-y-4">
-                                    <a
-                                        href="#"
-                                        className="flex items-center 
-                                        justify-center px-4 py-2 space-x-2 
-                                        transition-colors duration-300 border border-gray-800 
-                                        rounded-md group hover:bg-gray-800 focus:outline-none"
-                                    >
-                                        <span>
-                                            <Google />
-                                        </span>
-                                        <span className="text-sm 
-                                            font-medium text-gray-800 
-                                            group-hover:text-white">Google</span>
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="flex items-center 
-                                        justify-center px-4 py-2 
-                                        space-x-2 transition-colors 
-                                        duration-300 border border-blue-500 
-                                        rounded-md group hover:bg-blue-500 
-                                        focus:outline-none"
-                                    >
-                                        <span>
-                                            <Twitter />
-                                        </span>
-                                        <span className="text-sm font-medium 
-                                        text-blue-500 group-hover:text-white">Twitter</span>
-                                    </a>
+                                    <GoogleAuth />
+                                    <TwitterAuth />
                                 </div>
                             </div>
                             <hr className="mb-6 border-t" />

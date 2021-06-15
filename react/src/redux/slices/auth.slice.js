@@ -18,6 +18,10 @@ export const checkSessionAsync = createAsyncThunk('auth/checksession', async () 
     return await AuthService.checkSession();
 });
 
+export const logoutAsync = createAsyncThunk('auth/logout', async (data) => {
+    return await AuthService.logout(data);
+});
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
@@ -65,6 +69,12 @@ export const authSlice = createSlice({
                 state.hasUser = false;
                 state.error = action.payload.message;
             }
+        });
+
+        builder.addCase(logoutAsync.fulfilled, (state) => {
+            state.user = null;
+            state.hasUser = null;
+            state.error = '';
         });
 
         builder.addCase(googleLoginAsync.fulfilled, (state, action) => {

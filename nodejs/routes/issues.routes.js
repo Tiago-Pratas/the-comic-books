@@ -32,4 +32,10 @@ router.get('/get-collection', Controllers.findCollectionGET);
  */
 router.patch('/delete-collection', Controllers.deleteFromColectionPATCH);
 
+/**
+ * POST issues/save-wishlist
+ * save issue to users wishlist
+ */
+router.post('/save-wishlist', Controllers.saveToWishlistPOST);
+
 export { router };

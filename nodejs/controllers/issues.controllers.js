@@ -97,10 +97,26 @@ const deleteFromColectionPATCH = async (req, res, next) => {
     }
 };
 
+const saveToWishlistPOST = async (req, res, next) => {
+    try {
+        const { apiRef, id } = req.body;
+
+        const foundIssue = await Issue.findOneAndUpdate({ apiRef }, { $addToSet: { wishers: id } });
+
+        console.log(apiRef, id);
+        return !foundIssue ?
+            res.json('There is no such issue in our database') :
+            res.json(foundIssue);
+    } catch (error) {
+        return next(error);
+    }
+};
+
 export {
     saveIssuesPOST,
     findIssuesGET,
     findCollectionGET,
     deleteFromColectionPATCH,
     saveToCollectionPOST,
+    saveToWishlistPOST,
 };

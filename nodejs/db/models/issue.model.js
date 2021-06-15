@@ -73,6 +73,19 @@ const IssueSchema = mongoose.Schema(
                 type: mongoose.Types.ObjectId, ref: 'User',
             },
         ],
+        wishers: [
+            {
+                type: mongoose.Types.ObjectId, ref: 'User',
+            },
+        ],
+        publisher: {
+            apiRef: {
+                type: String,
+            },
+            name: {
+                type: String,
+            },
+        },
 
     },
     {
