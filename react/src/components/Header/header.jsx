@@ -27,9 +27,9 @@ const Header = () => {
                 md:mr-auto flex flex-wrap 
                 items-center text-base justify-center">
                         <a className="mr-5 hover:text-red-500" 
-                            href="/collection">
+                            href="/home">
                             <FaHome />
-                            <span clsssName="inline-flex">Home</span>
+                            <span className="inline-flex">Home</span>
                         </a>
                         <a className="mr-5 hover:text-red-500" 
                             href="/collection">

@@ -24,7 +24,7 @@ router.post('/save-collection', Controllers.saveToCollectionPOST);
  * GET issues/get-collection
  * get issues from a specific user
  */
-router.get('/get-collection', Controllers.findCollectionGET);
+router.get('/get-collection/:id', Controllers.findCollectionGET);
 
 /**
  * PATCH issues/delete-collection
@@ -37,5 +37,11 @@ router.patch('/delete-collection', Controllers.deleteFromColectionPATCH);
  * save issue to users wishlist
  */
 router.post('/save-wishlist', Controllers.saveToWishlistPOST);
+
+/**
+ * POST issues/save-wishlist
+ * save issue to users wishlist
+ */
+router.get('/get-wishlist/:id', Controllers.findWishlistGET);
 
 export { router };

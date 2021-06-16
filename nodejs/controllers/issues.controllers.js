@@ -73,10 +73,14 @@ const saveToCollectionPOST = async (req, res, next) => {
 
 const findCollectionGET = async (req, res, next) => {
     try {
-        const { id } = req.body;
+        const { id } = req.params;
 
         const findIssues = await Issue.find({ owners: id });
 
+        if (!findIssues.length) {
+            return res.json('no issues found');
+        }
+        console.log(id);
         return res.json(findIssues);
     } catch (error) {
         return next(error);
@@ -103,10 +107,26 @@ const saveToWishlistPOST = async (req, res, next) => {
 
         const foundIssue = await Issue.findOneAndUpdate({ apiRef }, { $addToSet: { wishers: id } });
 
-        console.log(apiRef, id);
+
         return !foundIssue ?
             res.json('There is no such issue in our database') :
             res.json(foundIssue);
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const findWishlistGET = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const findIssues = await Issue.find({ wishers: id });
+
+        if (!findIssues.length) {
+            return res.json('no issues saved on your wishlist');
+        }
+        console.log(id);
+        return res.json(findIssues);
     } catch (error) {
         return next(error);
     }
@@ -119,4 +139,5 @@ export {
     deleteFromColectionPATCH,
     saveToCollectionPOST,
     saveToWishlistPOST,
+    findWishlistGET,
 };
