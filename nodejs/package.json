@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "description": "the comic books backdoor",
     "engines": {
-        "node": "15.14.0"
+        "node": ">=0.10.3 <15"
+          
     },
     "type": "module",
     "main": "app.js",
