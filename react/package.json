@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
   "scripts": {
-    "tailwind:build": "NODE_ENV=production postcss src/index.css -o src/tailwind.output.css",
+    "tailwind:build": "postcss src/index.css -o src/tailwind.output.css",
     "tailwind:dev": "postcss src/index.css -o src/tailwind.output.css",
     "prestart": "npm run tailwind:dev",
     "prebuild": "npm run tailwind:build",
