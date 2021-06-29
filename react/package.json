@@ -6,7 +6,7 @@
     "prestart": "npm run tailwind:dev",
     "prebuild": "npm run tailwind:build",
     "start": "vite",
-    "build": "vite build --watch",
+    "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint './**/*.js' './**/*.jsx'",
     "lint:fix": "eslint --fix"
