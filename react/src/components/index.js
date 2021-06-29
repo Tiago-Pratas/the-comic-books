@@ -1,5 +1,5 @@
 import Login from './Login/Login';
-import Register from './Register/Register';
+import Register from './register/Register';
 import Header from './Header/Header';
 import WishlistBtn from './WishlistBtn/WishlistBtn';
 import CollectionBtn from './CollectionBtn/CollectionBtn';
