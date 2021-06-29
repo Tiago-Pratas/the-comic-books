@@ -60,15 +60,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //<-- Routes -->
-app.use('/auth', authRoutes);
-app.use('/issues', issueRoutes);
-app.use('/volumes', volumeRoutes);
-app.use('/characters', characterRoutes);
-app.use('/teams', teamRoutes);
-app.use('/persons', personRoutes);
-app.use('/publishers', publisherRoutes);
-app.use('/story-arc', storyArcRoutes);
-app.use('/market', isAuthenticated, marketRoutes);
+app.use('auth', authRoutes);
+app.use('issues', issueRoutes);
+app.use('volumes', volumeRoutes);
+app.use('characters', characterRoutes);
+app.use('teams', teamRoutes);
+app.use('persons', personRoutes);
+app.use('publishers', publisherRoutes);
+app.use('story-arc', storyArcRoutes);
+app.use('market', isAuthenticated, marketRoutes);
 
 
 //<-- exception handling -->
