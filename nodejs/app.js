@@ -23,7 +23,7 @@ connect();
 
 
 //intialise server
-const port = process.env.PORT;
+const port = 3500;
 const app = express();
 
 //allow CORS
