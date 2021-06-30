@@ -4,7 +4,6 @@ import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { connect } from './db/mongoose.js';
-import { shouldSendSameSiteNone } from 'should-send-same-site-none';
 import { authRoutes,
     issueRoutes,
     volumeRoutes,
@@ -36,8 +35,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(shouldSendSameSiteNone);
-
 //use cookieparser
 app.use(
     session({
@@ -46,8 +43,10 @@ app.use(
         saveUninitialized: false,
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
-            secure: true,
             httpOnly: true,
+            sameSite: 'none',
+            secure: true,
+
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
