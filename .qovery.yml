@@ -1,0 +1,15 @@
+---
+application:
+  name: "the-comic-books"
+  project: "thecomicbooks-back"
+  organization: "QoveryCommunity"
+databases:
+- type: "MONGODB"
+  name: "the-comic-books"
+  version: "4.4"
+routers:
+- name: "main-the-comic-books"
+  routes:
+  - application_name: "the-comic-books"
+    paths:
+    - "/*"
