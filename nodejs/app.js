@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import session from 'express-session';
+import cookieSession from 'cookie-session';
 import MongoStore from 'connect-mongo';
 import { connect } from './db/mongoose.js';
 import { authRoutes,
@@ -35,8 +36,21 @@ app.use(function(req, res, next) {
     next();
 });
 
-//use cookieparser
+app.set('trust proxy', 1)
 app.use(
+    cookieSession({
+        name: '__session',
+        keys: ['key1'],
+        maxAge: 24 * 60 * 60 * 100,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'none',
+    }),
+);
+
+//use cookieparser
+/***
+ *app.use(
     session({
         secret: process.env.APP_SECRET,
         resave: false,
@@ -51,7 +65,7 @@ app.use(
             mongoUrl: process.env.DB_URL,
         }),
     }),
-);
+);**/
 
 //initialise passport
 app.use(passport.initialize());
