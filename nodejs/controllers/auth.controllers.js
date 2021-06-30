@@ -198,6 +198,7 @@ const googleReturn = (req, res, next) => {
                 return;
             }
             req.login(user, (error) => {
+                console.log(user);
                 if (error) {
                     res.send(error.message);
                     return;
