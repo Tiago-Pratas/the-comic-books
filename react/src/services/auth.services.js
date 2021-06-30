@@ -5,7 +5,7 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 const AuthService = {
     register: async (userData) => {
         try {
-            const request = await axios.post(`${serverUrl}/auth/register`,
+            const request = await axios.post(`${serverUrl}auth/register`,
                 userData,
                 { withCredentials: true });
 
@@ -19,7 +19,7 @@ const AuthService = {
 
     login: async (userData) => {
         try {
-            const request = await axios.post(`${serverUrl}/auth/login`,
+            const request = await axios.post(`${serverUrl}auth/login`,
                 userData, 
                 { withCredentials: true });
 
@@ -31,7 +31,7 @@ const AuthService = {
 
     checkSession: async () => {
         try {
-            const request = await axios.get(`${serverUrl}/auth/check-session`,
+            const request = await axios.get(`${serverUrl}auth/check-session`,
                 { withCredentials: true });
             
             return request.data;
@@ -63,7 +63,7 @@ const AuthService = {
     googleLogin: async () => {
 
         try {
-            const request = await axios.get(`${serverUrl}/auth/google`, { withCredentials: true });
+            const request = await axios.get(`${serverUrl}auth/google`, { withCredentials: true });
         
             return request;
             
