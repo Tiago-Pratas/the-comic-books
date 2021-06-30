@@ -45,7 +45,7 @@ app.use(
             maxAge: 1000 * 60 * 60 * 40,
             secure: true,
             httpOnly: true,
-            sameSite: 'none',
+            SameSite: 'none',
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
