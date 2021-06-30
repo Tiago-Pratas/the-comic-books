@@ -18,13 +18,14 @@ const salt = 10;
 //serialise session for user
 passport.serializeUser((user, done) => {
     console.log('here', user.id);
-    return done(null, user._id);
+    return done(null, user.id);
 });
 
 //deserialise user
 passport.deserializeUser(async (id, done) => {
     try {
         const existingUser = await User.findById(id);
+        console.log(existingUser);
         return done(null, existingUser);
     } catch (error) {
         return done(error);
