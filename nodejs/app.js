@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
 app.set('trust proxy', 1)
 app.use(
     cookieSession({
-        name: '__session',
+        name: 'session',
         keys: ['key1'],
         maxAge: 24 * 60 * 60 * 100,
         secure: true,
