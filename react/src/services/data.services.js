@@ -34,7 +34,7 @@ const DataServices = {
                         }
                     });
 
-                    const response = await axios.post(`${serverUrl}/issues/save`,
+                    const response = await axios.post(`${serverUrl}issues/save`,
                         mapper(savedIssue.data.results), { withCredentials: true });
                     
                     return response.data;
@@ -50,20 +50,20 @@ const DataServices = {
     },
 
     findIssue: async (apiRef) => {
-        const issue = await axios.get(`${serverUrl}/issues/find/${apiRef}`, 
+        const issue = await axios.get(`${serverUrl}issues/find/${apiRef}`, 
             { withCredentials: true });
         return issue.data;
     },
 
     saveTocollection: async (id, apiRef) => {
-        return await axios.post(`${serverUrl}/issues/save-collection/`,
+        return await axios.post(`${serverUrl}issues/save-collection/`,
             { id: id, apiRef: apiRef },
             { withCredentials: true } );
     },
 
     saveToWishlist: async (id, apiRef) => {
         try {
-            return await axios.post(`${serverUrl}/issues/save-wishlist/`,
+            return await axios.post(`${serverUrl}issues/save-wishlist/`,
                 { id: id, apiRef: apiRef },
                 { withCredentials: true } ); 
         } catch (error) {

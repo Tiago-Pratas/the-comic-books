@@ -68,6 +68,7 @@ const logoutPost = (req, res) => {
 
 //auth/check-session
 const checkSession = async (req, res) => {
+    console.log('request session', req.session);
     if (req.session) {
         return res.json(req.user);
     } else {

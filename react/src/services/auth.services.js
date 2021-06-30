@@ -33,7 +33,7 @@ const AuthService = {
         try {
             const request = await axios.get(`${serverUrl}auth/check-session`,
                 { withCredentials: true });
-            
+            console.log(request.data);
             return request.data;
 
         } catch (error) {
