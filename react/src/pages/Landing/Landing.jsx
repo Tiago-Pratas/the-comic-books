@@ -25,7 +25,7 @@ const Landing = () => {
                         text-white bg-red-500 
                         border-0 py-2 px-6 focus:outline-none 
                         hover:text-gray-700 hover:bg-gray-100 
-                        rounded text-lg"><Link href="/register">Sign Up</Link></button>
+                        rounded text-lg"><Link to="/register">Sign Up</Link></button>
                 </div>
             </div>
             <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
