@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { registerAsync, matchPasswords } from '../../redux/slices/auth.slice';
 import { GoogleAuth, TwitterAuth } from '../index';
 
@@ -178,13 +179,13 @@ const Register = () => {
                         </div>
                         <hr className="mb-6 border-t" />
                         <div className="text-center">
-                            <a className="inline-block
+                            <Link className="inline-block
                             text-sm text-blue-500 
                             align-baseline hover:text-blue-800"
                             href="./login"
                             >
                             Already have an Account!
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

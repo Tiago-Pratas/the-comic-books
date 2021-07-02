@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Hero from '../../assets/Hero.jpg'; 
 
 const Landing = () => {
@@ -24,7 +25,7 @@ const Landing = () => {
                         text-white bg-red-500 
                         border-0 py-2 px-6 focus:outline-none 
                         hover:text-gray-700 hover:bg-gray-100 
-                        rounded text-lg"><a href="/register">Sign Up</a></button>
+                        rounded text-lg"><Link href="/register">Sign Up</Link></button>
                 </div>
             </div>
             <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
