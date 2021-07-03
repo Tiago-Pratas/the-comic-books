@@ -15,7 +15,7 @@
         "semi": ["error", "always"],
         "spaced-comment": ["error", "never"],
         "object-curly-spacing": ["error", "always"],
-        "max-len": ["error", { "code": 100 }],
+        "max-len": ["error", { "code": 120 }],
         "new-cap": ["error", { "capIsNew": false }],
         "require-jsdoc": [
             "error",
