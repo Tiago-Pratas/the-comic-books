@@ -26,6 +26,7 @@ connect();
 const port = process.env.PORT;
 const app = express();
 
+app.enable('trust proxy');
 //allow CORS
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
@@ -35,7 +36,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.enable('trust proxy');
 //use cookieparser
 app.use(
     session({
