@@ -23,7 +23,7 @@ const DataServices = {
             const savedIssues = await Promise.all(issues.data.results.map(async (issue) => {
                 const mapedIssue = mapper(issue);
 
-                const findIssue = await axios.get(`${serverUrl}/issues/find/${mapedIssue.apiRef}`,
+                const findIssue = await axios.get(`${serverUrl}issues/find/${mapedIssue.apiRef}`,
                     { withCredentials: true });
 
                 if (!findIssue.data) {
@@ -74,7 +74,7 @@ const DataServices = {
 
     findCollection: async (id) => {
         try {
-            const collection = await axios.get(`${serverUrl}/issues/get-collection/${id}`,
+            const collection = await axios.get(`${serverUrl}issues/get-collection/${id}`,
                 { withCredentials: true });
             
             return collection.data;
@@ -85,7 +85,7 @@ const DataServices = {
 
     findWishlist: async (id) => {
         try {
-            const collection = await axios.get(`${serverUrl}/issues/get-wishlist/${id}`,
+            const collection = await axios.get(`${serverUrl}issues/get-wishlist/${id}`,
                 { withCredentials: true }); 
 
             return collection.data;
