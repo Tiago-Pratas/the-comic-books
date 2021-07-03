@@ -45,8 +45,7 @@ app.use(
         proxy: true,
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
-            secure: true,
-            sameSite: true,
+            sameSite: 'lax',
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
