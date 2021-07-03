@@ -35,8 +35,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.set('trust proxy', 1);
-
 //use cookieparser
 app.use(
     session({
@@ -45,7 +43,6 @@ app.use(
         saveUninitialized: false,
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
-            domain: process.env.CLIENT_URL,
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
