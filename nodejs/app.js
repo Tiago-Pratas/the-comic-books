@@ -35,6 +35,7 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.enable('trust proxy');
 //use cookieparser
 app.use(
     session({
