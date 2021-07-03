@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { logoutAsync } from '../../redux/slices/auth.slice';
 import { FaBookDead, FaHome, FaSearch, FaShoppingBag, FaDoorOpen } from 'react-icons/fa';
 
@@ -14,9 +15,9 @@ const Header = () => {
 
     return <header className="text-gray-600 body-font bg-yellow-100 opacity-1">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-            <a className="flex title-font 
+            <Link className="flex title-font 
                 font-medium items-center 
-                text-gray-900 mb-4 md:mb-0" href="/" />
+                text-gray-900 mb-4 md:mb-0" to="/" />
             <img src={user && user.profilePic || 'https://tinyurl.com/p2rjh73s'} 
                 className="w-20 h-20 text-white p-2 rounded-full" /> 
             <span className="ml-3 text-xl">The comic books</span>
@@ -26,26 +27,26 @@ const Header = () => {
                     <nav className="md:ml-auto 
                 md:mr-auto flex flex-wrap 
                 items-center text-base justify-center">
-                        <a className="mr-5 hover:text-red-500" 
-                            href="/home">
+                        <Link className="mr-5 hover:text-red-500" 
+                            to="/home">
                             <FaHome />
                             <span className="inline-flex">Home</span>
-                        </a>
-                        <a className="mr-5 hover:text-red-500" 
-                            href="/collection">
+                        </Link>
+                        <Link className="mr-5 hover:text-red-500" 
+                            to="/collection">
                             <FaBookDead />
                             Collection
-                        </a>
-                        <a className="mr-5 hover:text-red-500" 
-                            href="/search">
+                        </Link>
+                        <Link className="mr-5 hover:text-red-500" 
+                            to="/search">
                             <FaSearch />
                             Search
-                        </a>
-                        <a className="mr-5 hover:text-red-500" 
-                            href="/market">
+                        </Link>
+                        <Link className="mr-5 hover:text-red-500" 
+                            to="/market">
                             <FaShoppingBag />
                             Buy Comics
-                        </a>
+                        </Link>
                     </nav>
                     <button className="inline-flex items-center 
                         bg-yellow-300 border-0 py-1 px-3 focus:outline-none 
