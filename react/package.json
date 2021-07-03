@@ -5,7 +5,7 @@
     "tailwind:dev": "postcss src/index.css -o src/tailwind.output.css",
     "prestart": "npm run tailwind:dev",
     "prebuild": "npm run tailwind:build",
-    "start": "vite --https",
+    "start": "vite",
     "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint './**/*.js' './**/*.jsx'",
