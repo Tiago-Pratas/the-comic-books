@@ -46,7 +46,7 @@ app.use(
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
-            domain: '*.herokuapp.com'
+            domain: '*.herokuapp.com',
             httpOnly: true,
             sameSite: 'none',
             secure: true,
