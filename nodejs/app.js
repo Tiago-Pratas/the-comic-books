@@ -45,6 +45,7 @@ app.use(
         proxy: true,
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
+            domain: process.env.CLIENT_URL,
             path: '/',
             httpOnly: true,
             sameSite: 'none',
