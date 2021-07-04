@@ -46,7 +46,6 @@ app.use(
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
-            domain: process.env.CLIENT_URL,
             httpOnly: true,
             sameSite: 'none',
             secure: true,
