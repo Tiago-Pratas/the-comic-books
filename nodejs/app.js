@@ -26,7 +26,7 @@ const port = process.env.PORT;
 const app = express();
 
 
-app.set('trust proxy', true);
+app.enable('trust proxy');
 
 
 //allow CORS
@@ -46,9 +46,12 @@ app.use(
         secret: process.env.APP_SECRET,
         resave: false,
         saveUninitialized: false,
-        proxy: true,
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
+            path: '/',
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true,
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
