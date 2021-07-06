@@ -49,8 +49,9 @@ app.use(
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
             httpOnly: true,
+            domain: '.herokuapp.com',
             sameSite: 'none',
-            secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+            secure: true,
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
