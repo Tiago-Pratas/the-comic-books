@@ -4,7 +4,6 @@ import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { connect } from './db/mongoose.js';
-import secure from 'ssl-express-www';
 import { authRoutes,
     issueRoutes,
     volumeRoutes,
@@ -22,12 +21,10 @@ dotenv.config();
 //connect to mongoDB
 connect();
 
-
 //intialise server
 const port = process.env.PORT;
 const app = express();
 
-app.use(secure);
 
 app.set('trust proxy', true);
 
@@ -47,14 +44,12 @@ console.log(process.env.NODE_ENV);
 app.use(
     session({
         secret: process.env.APP_SECRET,
-        resave: true,
+        resave: false,
         saveUninitialized: false,
         proxy: true,
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
-            sameSite: 'lax',
-            secure: true,
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
