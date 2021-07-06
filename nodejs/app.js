@@ -50,7 +50,7 @@ app.use(
             path: '/',
             httpOnly: true,
             sameSite: 'none',
-            secure: true,
+            secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
