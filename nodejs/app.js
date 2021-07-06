@@ -26,7 +26,7 @@ connect();
 const port = process.env.PORT;
 const app = express();
 
-app.enable('trust proxy');
+app.set('trust proxy', true);
 //allow CORS
 app.use(function(req, res, next) {
     res.set('credentials', 'include');
