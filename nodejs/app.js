@@ -49,7 +49,7 @@ app.use(
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
             httpOnly: true,
-            sameSite: 'none',
+            sameSite: 'lax',
             secure: true,
             domain: 'https://infinite-taiga-22408.herokuapp.com',
         },
