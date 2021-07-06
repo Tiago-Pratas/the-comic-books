@@ -4,6 +4,7 @@ import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { connect } from './db/mongoose.js';
+import secure from 'ssl-express-www';
 import { authRoutes,
     issueRoutes,
     volumeRoutes,
@@ -26,14 +27,18 @@ connect();
 const port = process.env.PORT;
 const app = express();
 
+app.use(secure);
+
 app.set('trust proxy', true);
+
+
 //allow CORS
 app.use(function(req, res, next) {
-    res.set('credentials', 'include');
-    res.set('Access-Control-Allow-Credentials', true);
-    res.set('Access-Control-Allow-Origin', process.env.CLIENT_URL);
-    res.set('Access-Control-Allow-Methods', 'GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE');
-    res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('credentials', 'include');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
 console.log(process.env.NODE_ENV);
