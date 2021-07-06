@@ -36,6 +36,7 @@ app.use(function(req, res, next) {
     res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
+console.log(process.env.NODE_ENV);
 
 //use cookieparser
 app.use(
@@ -47,7 +48,7 @@ app.use(
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
             sameSite: 'lax',
-            secure: process.env.NODE_ENV === 'production',
+            secure: false,
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
