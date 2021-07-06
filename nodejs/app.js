@@ -49,7 +49,7 @@ app.use(
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
             httpOnly: true,
-            sameSite: 'lax',
+            sameSite: 'none',
             secure: true,
         },
         store: MongoStore.create({
