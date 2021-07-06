@@ -51,7 +51,6 @@ app.use(
             httpOnly: true,
             sameSite: 'lax',
             secure: true,
-            domain: 'https://infinite-taiga-22408.herokuapp.com',
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
