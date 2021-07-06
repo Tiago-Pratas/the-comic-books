@@ -31,11 +31,10 @@ app.enable('trust proxy');
 
 //allow CORS
 app.use(function(req, res, next) {
-    res.header('credentials', 'include');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL);
     res.header('Access-Control-Allow-Methods', 'GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
 console.log(process.env.NODE_ENV);
@@ -52,6 +51,7 @@ app.use(
             httpOnly: true,
             sameSite: 'none',
             secure: true,
+            domain: 'https://infinite-taiga-22408.herokuapp.com',
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
