@@ -41,7 +41,7 @@ app.use(function(req, res, next) {
 app.use(
     session({
         secret: process.env.APP_SECRET,
-        resave: false,
+        resave: true,
         saveUninitialized: false,
         proxy: true,
         cookie: {
