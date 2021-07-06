@@ -52,6 +52,7 @@ app.use(
         proxy: true,
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
+            path: '/',
             sameSite: 'lax',
             secure: true,
         },
