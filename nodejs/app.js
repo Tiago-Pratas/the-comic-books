@@ -29,10 +29,11 @@ const app = express();
 app.enable('trust proxy');
 //allow CORS
 app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL);
-    res.header('Access-Control-Allow-Methods', 'GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.set('credentials', 'include');
+    res.set('Access-Control-Allow-Credentials', true);
+    res.set('Access-Control-Allow-Origin', process.env.CLIENT_URL);
+    res.set('Access-Control-Allow-Methods', 'GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE');
+    res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
 
@@ -42,10 +43,9 @@ app.use(
         secret: process.env.APP_SECRET,
         resave: false,
         saveUninitialized: false,
-        proxy: true,
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
-            sameSite: true,
+            path: '/',
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
