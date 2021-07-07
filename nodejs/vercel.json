@@ -2,9 +2,10 @@
   "version": 2,
   "name": "the-comic-books-api",
   "builds": [
-    { "src": "./", "use": "@vercel/node" }
+    { "src": "./app.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "./" }
+    { "src": "/", "dest": "/" },
+    { "src": "/issues/(.*)", "dest": "/issues/(.*)" }
   ]
 }
