@@ -20,7 +20,7 @@ const AuthService = {
     login: async (userData) => {
         try {
             const request = await axios.post(`${serverUrl}auth/login`,
-                userData, 
+                { userData }, 
                 { withCredentials: true });
 
             return request.data;
@@ -43,7 +43,7 @@ const AuthService = {
     
     logout: async (user) => {
         const request = await axios.post(`${serverUrl}/logout`, 
-            user, 
+            { user }, 
             { withCredentials: true });
     
         return request;
