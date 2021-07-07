@@ -30,6 +30,7 @@ const app = express();
 //allow CORS
 app.use(
     cors({
+        methods: ['GET', 'PUT', 'PATCH', 'POST'],
         credentials: true,
         preflightContinue: true,
         allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie', 'Origin', 'Accept'],
