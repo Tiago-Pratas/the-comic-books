@@ -27,20 +27,17 @@ const port = process.env.PORT;
 const app = express();
 
 
-app.set('trust proxy', 1);
-
-
 //allow CORS
 app.use(
     cors({
         credentials: true,
         preflightContinue: true,
-        allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie', 'Origin', 'Accept'],
         origin: process.env.CLIENT_URL,
     }),
 );
-console.log(process.env.NODE_ENV);
 
+app.set('trust proxy', 1);
 //use cookieparser
 app.use(
     session({
