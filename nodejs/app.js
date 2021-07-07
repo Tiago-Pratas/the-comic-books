@@ -22,7 +22,7 @@ dotenv.config();
 connect();
 
 //intialise server
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const app = express();
 
 
@@ -49,7 +49,6 @@ app.use(
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
             httpOnly: true,
-            domain: '.herokuapp.com',
             sameSite: 'none',
             secure: true,
         },
