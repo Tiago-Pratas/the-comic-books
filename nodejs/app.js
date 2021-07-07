@@ -33,9 +33,8 @@ app.enable('trust proxy');
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL);
-    res.setHeader('Access-Control-Allow-Headers', 'Set-Cookie');
     res.header('Access-Control-Allow-Methods', 'GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Set-Cookie');
     next();
 });
 console.log(process.env.NODE_ENV);
@@ -50,7 +49,7 @@ app.use(
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
             httpOnly: true,
-            sameSite: 'none',
+            sameSite: 'lax',
             secure: true,
         },
         store: MongoStore.create({
