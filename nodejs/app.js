@@ -22,7 +22,6 @@ dotenv.config();
 connect();
 
 //intialise server
-
 const port = process.env.PORT;
 const app = express();
 
@@ -50,7 +49,7 @@ app.use(
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
             httpOnly: true,
-            sameSite: 'none',
+¡            sameSite: 'none',
             secure: true,
         },
         store: MongoStore.create({
