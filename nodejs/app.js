@@ -4,6 +4,7 @@ import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { connect } from './db/mongoose.js';
+import cors from 'cors';
 import { authRoutes,
     issueRoutes,
     volumeRoutes,
@@ -26,17 +27,16 @@ const port = process.env.PORT;
 const app = express();
 
 
-app.enable('trust proxy');
+app.set('trust proxy', 1);
 
 
 //allow CORS
-app.use(function(req, res, next) {
-    res.set('Access-Control-Allow-Credentials', 'true');
-    res.set('Access-Control-Allow-Origin', process.env.CLIENT_URL);
-    res.set('Access-Control-Allow-Methods', 'GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE');
-    res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Set-Cookie');
-    next();
-});
+app.use(
+    cors({
+        credentials: true,
+        origin: [process.env.CLIENT_URL],
+    }),
+);
 console.log(process.env.NODE_ENV);
 
 //use cookieparser
@@ -48,9 +48,8 @@ app.use(
         proxy: true,
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
-            path: '/',
-            sameSite: 'none',
-            secure: true,
+            sameSite: process.env.NODE_ENV === 'prod' ? 'none' : 'lax',
+            secure: process.env.NODE_ENV === 'prod',
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
