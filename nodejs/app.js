@@ -50,8 +50,8 @@ app.use(
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
             domain: '.herokuapp.com',
-            sameSite: process.env.NODE_ENV === 'prod' ? 'none' : 'lax',
-            secure: process.env.NODE_ENV === 'prod',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            secure: process.env.NODE_ENV === 'production',
         },
         store: MongoStore.create({
             mongoUrl: process.env.DB_URL,
