@@ -49,7 +49,7 @@ app.use(
         cookie: {
             maxAge: 1000 * 60 * 60 * 40,
             path: '/',
-            domain: '.herokuapp.com',
+            httpOnly: true,
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
             secure: process.env.NODE_ENV === 'production',
         },
