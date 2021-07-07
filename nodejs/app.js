@@ -34,7 +34,8 @@ app.set('trust proxy', 1);
 app.use(
     cors({
         credentials: true,
-        origin: [process.env.CLIENT_URL],
+        preflightContinue: true,
+        origin: process.env.CLIENT_URL,
     }),
 );
 console.log(process.env.NODE_ENV);
