@@ -35,6 +35,7 @@ app.use(
     cors({
         credentials: true,
         preflightContinue: true,
+        allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
         origin: process.env.CLIENT_URL,
     }),
 );
