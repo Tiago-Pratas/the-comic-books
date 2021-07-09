@@ -31,14 +31,14 @@ function App() {
                     </Route>
                     <Route path='/register' component={Pages.Auth}>
                     </Route>
-                    <Route path='/search' component={Pages.Search}>
-                    </Route>
-                    <Route path='/price/:id/:apiRef' exact={true} component={Pages.IssuePrice}>
-                    </Route>
-                    <Route path='/:volume/:number/:apiRef' exact={true} component={Pages.IssueDetail}>
-                    </Route>
-                    <Route path='/collection' component={Pages.Collection}>
-                    </Route>
+                    <Components.SecureRoute path='/search' component={Pages.Search}>
+                    </Components.SecureRoute>
+                    <Components.SecureRoute path='/price/:id/:apiRef' exact={true} component={Pages.IssuePrice}>
+                    </Components.SecureRoute>
+                    <Components.SecureRoute path='/:volume/:number/:apiRef' exact={true} component={Pages.IssueDetail}>
+                    </Components.SecureRoute>
+                    <Components.SecureRoute path='/collection' component={Pages.Collection}>
+                    </Components.SecureRoute>
                 </Switch>
 
             </main>

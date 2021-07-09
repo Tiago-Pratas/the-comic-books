@@ -5,6 +5,7 @@ import WishlistBtn from './WishlistBtn/WishlistBtn';
 import CollectionBtn from './CollectionBtn/CollectionBtn';
 import GoogleAuth from './GoogleAuth/GoogleAuth';
 import TwitterAuth from './TwitterAuth/TwitterAuth';
+import SecureRoute from './SecureRoute/SecureRoute';
 
 
 export { 
@@ -14,5 +15,6 @@ export {
     WishlistBtn,
     CollectionBtn,
     GoogleAuth,
-    TwitterAuth
+    TwitterAuth,
+    SecureRoute,
 };
