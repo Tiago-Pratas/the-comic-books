@@ -3,7 +3,7 @@ import { IoLogoTwitter } from 'react-icons/io';
 
 const TwitterAuth = () => {
     return <a
-        href={`${import.meta.env.VITE_SERVER_URL}/auth/twitter`}
+        href={`${import.meta.env.VITE_SERVER_URL}auth/twitter`}
         className="flex items-center 
             justify-center px-4 py-2 
             space-x-2 transition-colors 

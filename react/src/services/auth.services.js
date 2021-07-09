@@ -42,7 +42,7 @@ const AuthService = {
     },
     
     logout: async (user) => {
-        const request = await axios.post(`${serverUrl}/logout`, 
+        const request = await axios.post(`${serverUrl}auth/logout`, 
             { user }, 
             { withCredentials: true });
     
@@ -64,6 +64,18 @@ const AuthService = {
 
         try {
             const request = await axios.get(`${serverUrl}auth/google`, { withCredentials: true });
+        
+            return request;
+            
+        } catch (error) {
+            return error;
+        }
+    },
+    
+    twitterLogin: async () => {
+
+        try {
+            const request = await axios.get(`${serverUrl}auth/twitetr`, { withCredentials: true });
         
             return request;
             

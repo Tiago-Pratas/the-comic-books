@@ -17,7 +17,6 @@ const salt = 10;
 
 //serialise session for user
 passport.serializeUser((user, done) => {
-    console.log('here', user.id);
     return done(null, user.id);
 });
 
@@ -25,7 +24,6 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
     try {
         const existingUser = await User.findById(id);
-        console.log('deserialised user', existingUser);
         return done(null, existingUser);
     } catch (error) {
         return done(error);
@@ -144,6 +142,7 @@ async (accessToken, refreshToken, profile, done) => {
 const TwitterLogin = new TwitterStrategy({
     consumerKey: process.env.TWITTER_API_KEY,
     consumerSecret: process.env.TWITTER_SECRET,
+    userProfileURL: 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
     callbackURL: '/auth/twitter-return',
 },
 async (token, tokenSecret, profile, done) => {
@@ -153,10 +152,10 @@ async (token, tokenSecret, profile, done) => {
             //if we already have a record with the given profile ID
             return done(null, currentUser);
         } else {
-            console.log(profile);
+            console.log(profile.emails);
             //if not, create a new user
             const newUser = new User({
-                googleId: profile.id,
+                twitterId: profile.id,
                 password: null,
                 email: profile.emails[0].value,
                 username: profile.displayName,
@@ -165,8 +164,6 @@ async (token, tokenSecret, profile, done) => {
             });
 
             const savedUser = await newUser.save();
-
-            savedUser.googleId = null;
 
             return done(null, savedUser);
         }

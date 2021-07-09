@@ -10,7 +10,8 @@ const Header = () => {
     const dispatch = useDispatch();
 
     const logoutUser = () => {
-        dispatch(logoutAsync(user.id));
+        console.log(user.email);
+        dispatch(logoutAsync(user.email));
     };
 
     return <header className="text-gray-600 body-font bg-yellow-100 opacity-1">

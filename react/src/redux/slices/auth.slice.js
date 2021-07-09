@@ -14,11 +14,16 @@ export const googleLoginAsync = createAsyncThunk('auth/google', async () => {
     return await AuthService.googleLogin();
 });
 
+export const twitterLoginAsync = createAsyncThunk('auth/twitter', async () => {
+    return await AuthService.twitetrLogin();
+});
+
 export const checkSessionAsync = createAsyncThunk('auth/checksession', async () => {
     return await AuthService.checkSession();
 });
 
 export const logoutAsync = createAsyncThunk('auth/logout', async (data) => {
+    console.log(data);
     return await AuthService.logout(data);
 });
 
@@ -78,6 +83,17 @@ export const authSlice = createSlice({
         });
 
         builder.addCase(googleLoginAsync.fulfilled, (state, action) => {
+            if (action.payload.response != undefined) {
+                state.user = action.payload;
+                state.hasUser = true;
+                state.error = '';
+            } else {
+                state.hasUser = false;
+                state.error = action.payload.toString();
+            }
+        });
+
+        builder.addCase(twitterLoginAsync.fulfilled, (state, action) => {
             if (action.payload.response != undefined) {
                 state.user = action.payload;
                 state.hasUser = true;

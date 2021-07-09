@@ -54,6 +54,7 @@ const loginPost = (req, res, next) => {
 
 //auth/logout
 const logoutPost = (req, res) => {
+    console.log('here', req.user);
     if (req.user) {
         req.logout();
 
@@ -68,7 +69,6 @@ const logoutPost = (req, res) => {
 
 //auth/check-session
 const checkSession = async (req, res) => {
-    console.log('request session', req.session);
     if (req.session) {
         return res.json(req.user);
     } else {
@@ -105,7 +105,7 @@ const resendToken = async (req, res, next) => {
 
             await sendEmailToken(email, saveToken.verificationToken, req.get('origin'));
 
-            return res.status(200).json('We ahev sent you a link with a confirmation link');
+            return res.status(200).json('We have sent you a link with a confirmation link');
         }
 
         return await sendEmailToken(email, findToken.verificationToken, req.get('origin'));
@@ -199,7 +199,6 @@ const googleReturn = (req, res, next) => {
                 return;
             }
             req.login(user, (error) => {
-                console.log('login user', user);
                 if (error) {
                     res.send(error.message);
                     return;
